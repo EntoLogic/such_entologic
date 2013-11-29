@@ -1,0 +1,22 @@
+{
+  "name": "such_entologic",
+  "version": "0.0.1",
+  "author": "Rory Hughes",
+  "repository": {
+      "type": "git",
+      "url": "ssh://git@bitbucket.org/team0/such_entologic.git"
+  },
+  "engines": {
+      "node": "0.10.x",
+      "npm": "1.3.x"
+  },
+  "scripts": {
+    "start": "node such.js"
+  },
+  "dependencies": {
+    "express": "3.4.4",
+    "mongoose": "3.8.1",
+    "underscore": "1.5.2",
+    "connect-mongo": "0.4.0"
+  }
+}
