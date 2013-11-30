@@ -17,6 +17,17 @@
     "express": "3.4.4",
     "mongoose": "3.8.1",
     "underscore": "1.5.2",
-    "connect-mongo": "0.4.0"
+    "connect-mongo": "0.4.0",
+    "forever": "0.10.x",
+    "grunt": "0.4.x",
+    "grunt-cli": "0.1.x"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "0.5.x",
+    "grunt-contrib-sass": "0.5.x",
+    "grunt-contrib-jshint": "0.7.2",
+    "grunt-nodemon": "0.1.x",
+    "grunt-concurrent": "0.4.x",
+    "grunt-contrib-concat": "0.3.x"
   }
 }

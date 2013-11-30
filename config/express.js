@@ -6,6 +6,7 @@ var express = require('express'),
   config = require('./config');
 
 module.exports = function(app, db) {
+  app.use(express.logger("short"));
   app.set('showStackError', true);
 
   //Setting the fav icon and static folder
