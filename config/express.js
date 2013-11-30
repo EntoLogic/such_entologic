@@ -9,8 +9,8 @@ module.exports = function(app, db) {
   app.use(express.logger("short"));
   app.set('showStackError', true);
 
-  //Setting the fav icon and static folder
-  app.use(express.favicon());
+  //Setting the static folder
+  app.use(express.favicon(config.root + '/public/favicon.ico'));
   app.use(express.static(config.root + '/public'));
 
   app.configure(function() {
