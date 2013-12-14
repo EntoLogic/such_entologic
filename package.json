@@ -16,12 +16,21 @@
   "dependencies": {
     "express": "3.4.4",
     "mongoose": "3.8.1",
+    "connect-redis": "1.4.x",
     "underscore": "1.5.2",
     "connect-mongo": "0.4.0",
     "forever": "0.10.x",
     "grunt": "0.4.x",
     "grunt-cli": "0.1.x",
-    "mongoose-timestamp": "0.1.x"
+    "mongoose-timestamp": "0.1.x",
+    "bcrypt": "0.7.7",
+    "passport": "0.1.x",
+    "passport-local": "0.1.x",
+    "passport-twitter": "1.0.x",
+    "passport-github": "0.1.x",
+    "passport-google-oauth": "0.1.x",
+    "validator": "2.0.x",
+    "async": "0.2.x"
   },
   "devDependencies": {
     "grunt-contrib-watch": "0.5.x",

@@ -2,10 +2,10 @@
  * Module dependencies.
  */
 var express = require('express'),
-  mongoStore = require('connect-mongo')(express),
-  config = require('./config');
+    config = require('./config'),
+    RedisStore = require('connect-redis')(express);
 
-module.exports = function(app, db) {
+module.exports = function(app, passport, db) {
   app.use(express.logger("short"));
   app.set('showStackError', true);
 
@@ -22,23 +22,30 @@ module.exports = function(app, db) {
     app.use(express.json());
     app.use(express.methodOverride());
 
-    //express/mongo session storage
-    app.use(express.session({
-      secret: config.sessionsSecret,
-      store: new mongoStore({
-        db: db.connection.db,
-        collection: 'sessions'
-      })
-    }));
+    var redisObject = {
+      store: new RedisStore({
+        host: config.redis.host,
+        port: config.redis.port,
+        db: config.redis.dbNumber,
+        pass: config.redis.password
+      }),
+      secret: config.sessionsSecret
+    };
 
-    //dynamic helpers
-    // app.use(helpers(config.app.name));
+    redisObject.store.client.on("error", function(err) {
+      console.error("Error connecting to redis!", err);
+      process.exit(1);
+    });
+
+    //express/mongo session storage
+    app.use(express.session(redisObject));
 
     //use passport session
-    // app.use(passport.initialize());
-    // app.use(passport.session());
+    app.use(passport.initialize());
+    app.use(passport.session());
 
     //routes should be at the last
     app.use(app.router);
+    //TODO add 404, 500 here
   });
 };
