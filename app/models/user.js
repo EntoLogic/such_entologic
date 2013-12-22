@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
+    timestamps = require('mongoose-timestamp'),
     bcrypt = require('bcrypt'),
     _ = require('underscore'),
     async = require("async"),
@@ -33,6 +34,16 @@ var UserSchema = new Schema({
   github: {},
   google: {}
 });
+
+var apiSafeFields = {
+  me: "-_id email username realName provider",
+  randomUser: "-_id username realName"
+};
+_.each(apiSafeFields, function(value, key, obj) {
+  apiSafeFields[key + "Array"] = value.split(" ");
+});
+var bannedUsernames = ['me'];
+var bannedEmails = ['example@example.com'];
 
 /**
  * Virtuals
@@ -109,7 +120,6 @@ UserSchema.pre('validate', function(next) {
         if(err) {
           callback(err);
         } else if(userObj) {
-          // Do this automatically by looking for attributes with unique indexes
           if (userObj.email == user.email) {
             user.invalidate("email", "must be unique");
           }
@@ -145,13 +155,22 @@ UserSchema.pre('validate', function(next) {
         user.invalidate('password', 'must be between 6 and 100 characters.');
       }
       callback();
+    },
+    function(callback) {
+      if (user.email in bannedEmails) {
+        user.invalidate('email', 'may not be used.');
+      }
+      if (user.username in bannedUsernames) {
+        user.invalidate('username', 'may not be used.');
+      }
+      callback();
     }
   ],
   // optional callback
   function(err, results){
-      // the results array will equal ['one','two'] even though
-      // the second function had a shorter timeout.
-      next();
+    // the results array will equal ['one','two'] even though
+    // the second function had a shorter timeout.
+    next();
   });
 });
 
@@ -161,7 +180,20 @@ UserSchema.pre('validate', function(next) {
 UserSchema.methods = {
   authenticate: function(candidatePassword, cb) {
     return bcrypt.compareSync(candidatePassword, this.passwordHash);
+  },
+  cleanForApi: function() {
+    return _.pick(this, apiSafeFields.randomUserArray);
+    // return this.select(apiSafeFields);
+  },
+  cleanForOwnUser: function() {
+    return _.pick(this, apiSafeFields.meArray);
   }
 };
+
+UserSchema.static('findForApi', function (q, callback) {
+  this.findOne(q, apiSafeFields.randomUser, callback);
+});
+
+UserSchema.plugin(timestamps);
 
 mongoose.model('User', UserSchema);

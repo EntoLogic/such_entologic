@@ -1,8 +1,5 @@
-/**
- * Module dependencies.
- */
 var mongoose = require('mongoose'),
-  User = mongoose.model('User');
+    User = mongoose.model('User');
 
 /**
  * Auth callback
@@ -16,7 +13,7 @@ exports.authCallback = function(req, res, next) {
  */
 exports.signout = function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.json({sessionsStatus: 0});
 };
 
 /**
@@ -34,12 +31,12 @@ exports.create = function(req, res) {
 
   user.provider = 'local';
     
-  user.save(function(err) {
+  user.save(function(err, savedUser) {
     if (err) {
       //Send back only necessary errors
       return res.json({errors: err});
     }
-    return res.json({yup: "1"});
+    return res.json(savedUser.cleanForApi());
   });
 };
 
@@ -47,11 +44,14 @@ exports.create = function(req, res) {
  *  Show profile
  */
 exports.show = function(req, res) {
-  var user = req.profile;
-
-  res.render('users/show', {
-    title: user.name,
-    user: user
+  User.findForApi({username: req.params.username}, function(err, user) {
+    if (err) return next(err);
+    // if (!user) return next(new Error('Failed to load User ' + username));
+    if (user) {
+      res.json(user);
+    } else {
+      res.json({errors: ["Could not find user '" + username + "'"]});
+    }
   });
 };
 
@@ -59,21 +59,5 @@ exports.show = function(req, res) {
  * Send User
  */
 exports.me = function(req, res) {
-  res.jsonp(req.user || null);
-};
-
-/**
- * Find user by id
- */
-exports.user = function(req, res, next, id) {
-  User
-    .findOne({
-      _id: id
-    })
-    .exec(function(err, user) {
-      if (err) return next(err);
-      if (!user) return next(new Error('Failed to load User ' + id));
-      req.profile = user;
-      next();
-    });
+  res.json(req.user.cleanForOwnUser());
 };

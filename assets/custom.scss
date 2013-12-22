@@ -1,5 +1,23 @@
 // Custom styles go here
+body
+{
+	padding-top: 70px;
+}
 .main-footer
 {
 	font-size: 10px;
+}
+
+.navbar-ex1-collapse
+{
+	margin: 0 30px;
+	padding: 0;
+}
+
+.logo-img
+{
+	height: 34px;
+	margin: 10px 0 0 -70px; // half the width
+	display: inline-block;	position: absolute;
+	left: 50%;
 }

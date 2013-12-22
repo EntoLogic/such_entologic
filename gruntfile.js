@@ -39,7 +39,10 @@ module.exports = function(grunt) {
         separator: ';',
       },
       dist: {
-        src: ['assets/lib/ui-bootstrap-tpls-0.7.0.min.js', 'assets/ngapp/**/*.js'],
+        src: ['assets/lib/ui-bootstrap-tpls-0.7.0.min.js',
+              'assets/ngapp/main.js',
+              'assets/ngapp/controllers.js',
+              'assets/ngapp/services.js'],
         dest: 'public/custom.js',
       }
     },

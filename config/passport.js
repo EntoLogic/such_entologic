@@ -16,7 +16,7 @@ module.exports = function(passport) {
     User.findOne({
       _id: id
     }, "-passwordHash", function(err, user) {
-      console.log(user);
+      // console.log(user);
       done(err, user);
     });
   });
@@ -37,13 +37,11 @@ module.exports = function(passport) {
           return done(err);
         }
         if (!user) {
-          console.log('Unknown user');
           return done(null, false, {
             message: 'Unknown user'
           });
         }
         if (!user.authenticate(password)) {
-          console.log('Invalid pass');
           return done(null, false, {
             message: 'Invalid password'
           });
@@ -83,38 +81,6 @@ module.exports = function(passport) {
       });
     }
   ));
-
-  //Use facebook strategy
-  // passport.use(new FacebookStrategy({
-  //     clientID: config.facebook.clientID,
-  //     clientSecret: config.facebook.clientSecret,
-  //     callbackURL: config.facebook.callbackURL
-  //   },
-  //   function(accessToken, refreshToken, profile, done) {
-  //     User.findOne({
-  //       'facebook.id': profile.id
-  //     }, function(err, user) {
-  //       if (err) {
-  //         return done(err);
-  //       }
-  //       if (!user) {
-  //         user = new User({
-  //           name: profile.displayName,
-  //           email: profile.emails[0].value,
-  //           username: profile.username,
-  //           provider: 'facebook',
-  //           facebook: profile._json
-  //         });
-  //         user.save(function(err) {
-  //           if (err) console.log(err);
-  //           return done(err, user);
-  //         });
-  //       } else {
-  //         return done(err, user);
-  //       }
-  //     });
-  //   }
-  // ));
 
   //Use github strategy
   passport.use(new GitHubStrategy({

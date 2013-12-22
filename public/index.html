@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="such">
 <head>
 	<meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,15 +12,99 @@
 	<link rel="stylesheet" type="text/css" href="/custom.css">
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-resource.min.js"></script>
 	<script type="text/javascript" src="/custom.js"></script>
-<!-- 
+
 	<script src="http://localhost:35729/livereload.js"></script>
-	 -->
+	
 </head>
-<body>
-	<h1>EntoLogic</h1>
-	hi
-	wow
+<body ng-controller="MainController">
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img ng-src="/entologic-logo.png" alt="Entologic" class="logo-img">
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li class="button-group-navbar">
+          <div class="btn-group navbar-btn">
+            <button type="button" class="btn btn-primary">Explain</button>
+            <button type="button" class="btn btn-default">Contribute</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Help translate</a></li>
+              <li><a href="#">Add more programming languages</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+
+      <!-- <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form> -->
+      <ul class="nav navbar-nav navbar-right">
+        <li class="button-group-navbar" ng-controller="UserCornerController">
+          <div class="btn-group navbar-btn" ng-hide="u">
+            <button type="button" class="btn" 
+                    ng-class="{'btn-success': u === null}" 
+                    ng-bind="u === 0 ? 'Loading...' : 'Login/Signup'"
+                    ng-click="openLoginModal()"></button>
+          </div>
+          <div class="btn-group navbar-btn" ng-show="u">
+          	<button type="button" class="btn btn-default" ng-bind="u.username"></button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a href="#">Snippets</a></li>
+              <li><a href="#">Contributions</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Account Settings</a></li>
+              <li><a ng-click="signout()" href="#">Logout</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div class="container">
+    <script type="text/ng-template" id="loginModal.html">
+      <div class="modal-header">
+        <h3>Login/Register</h3>
+      </div>
+      <div class="modal-body">
+        <form ng-submit="loginUser(loginForm)">
+          <div class="form-group">
+            <label for="login">Login</label>
+            <input ng-model="loginForm.login" type='text' name="login" placeholder='Email/Username' class="form-control">
+          </body>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input ng-model="loginForm.password" type='password' name="password" placeholder='Password' class="form-control">
+          </div>
+          <button type="submit" class="btn btn-default">Login</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      </div>
+    </script>
+  </div>
 </body>
 </html>

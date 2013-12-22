@@ -1,17 +1,30 @@
 module.exports = function(app, passport, auth) {
   //User Routes
   var users = require('../app/controllers/users');
-  app.post('/signout', users.signout);
 
   // //Setting up the users api
-  app.post('/users', users.create);
+  app.post('/u', users.create);
 
-  app.post('/users/session', passport.authenticate('local', {
-    failureRedirect: '/test'
-  }), users.session);
+  app.post('/u/in', function(req, res, next){
+    passport.authenticate('local', function(err, user, info) {
+      if (err) {
+        console.log(err);
+        return next(err);
+      }
+      if (user) {
+        req.logIn(user, function(err) {
+          if (err) { return next(err); }
+          return res.json(200, {auth: 1});
+        });
+      } else {
+        res.json(401, {auth: -1, errors: [info.message]});
+      }
+    })(req, res, next);
+  });
+  app.post('/u/out', users.signout);
 
-  // app.get('/users/me', users.me);
-  // app.get('/users/:userId', users.show);
+  app.get('/u/me', auth.requiresLogin200, users.me);
+  app.get('/u/:username', users.show);
 
   // //Setting the facebook oauth routes
   // app.get('/auth/facebook', passport.authenticate('facebook', {
@@ -53,9 +66,6 @@ module.exports = function(app, passport, auth) {
   // app.get('/auth/google/callback', passport.authenticate('google', {
   //     failureRedirect: '/signin'
   // }), users.authCallback);
-
-  // //Finish with setting up the userId param
-  // app.param('userId', users.user);
 
   // //Article Routes
   // var articles = require('../app/controllers/articles');
