@@ -39,11 +39,23 @@ module.exports = function(grunt) {
         separator: ';',
       },
       dist: {
-        src: ['assets/lib/ui-bootstrap-tpls-0.7.0.min.js',
+        src: [
               'assets/ngapp/main.js',
+              'assets/ngapp/services.js',
               'assets/ngapp/controllers.js',
-              'assets/ngapp/services.js'],
+              'assets/ngapp/directives.js'
+             ],
         dest: 'public/custom.js',
+      }
+    },
+    uglify: {
+      options: {
+        mangle: false
+      },
+      my_target: {
+        files: {
+          'public/libs.min.js': ['assets/lib/ui-bootstrap-tpls-0.7.0.js','assets/lib/extra.js']
+        }
       }
     },
     nodemon: {
@@ -76,6 +88,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
 
@@ -83,5 +96,5 @@ module.exports = function(grunt) {
   grunt.option('force', true);
 
   //Default task(s).
-  grunt.registerTask('default', ['jshint', 'concurrent']);
+  grunt.registerTask('default', ['jshint', 'uglify', 'concurrent']);
 };

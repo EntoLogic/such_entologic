@@ -1,7 +1,7 @@
 // Custom styles go here
 body
 {
-	padding-top: 70px;
+	padding: 70px 0;
 }
 .main-footer
 {
@@ -14,10 +14,74 @@ body
 	padding: 0;
 }
 
-.logo-img
+
+.logo-img-container
 {
-	height: 34px;
-	margin: 10px 0 0 -70px; // half the width
+	width: 161px;
+	margin: 0 0 0 -83px; // half the width
 	display: inline-block;	position: absolute;
 	left: 50%;
+	height: 100%;
+	transition: background-color 0.1s;
+	padding: 0 10px;
+	&:hover
+	{
+		background-color: #e8e8e8;
+	}
+	&:active
+	{
+		background-color: #d8d8d8;
+		padding: 0 13px;
+	}
+	.logo-img
+	{
+		margin: 8px 0 0 0;
+		width: 100%;
+	}
 }
+
+.notification-bar
+{
+	height: 29px;
+	z-index: 2000;
+	position: fixed;
+	display: inline;
+	bottom: 0px;
+	.old-notification
+	{
+		opacity: 0.6;
+		transition: opacity 0.3s;
+		&:hover
+		{
+			opacity: 1;
+		}
+	}
+	.alert
+	{
+		display: inline-block;
+		padding: 2px;
+		margin: 0 0 4px 3px;
+		& > div
+		{
+			float: left;
+		}
+		.close
+		{
+			line-height: 17px;
+			padding-left: 3px;
+		}
+	}
+}
+
+.modal-header
+{
+	h3
+	{
+		margin: 0;
+	}
+
+}
+
+
+
+

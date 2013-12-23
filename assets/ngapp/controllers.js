@@ -1,6 +1,9 @@
-such.controller("MainController", function($scope, $http, $modal, User, Session) {
+such.controller("MainController", function($scope, $http, $modal, User, Session, Notifications) {
   $scope.u = 0; //Loading user data
   var modalInstance;
+
+  $scope.notifications = [];
+  Notifications.setNotificationArray($scope.notifications);
 
   $scope.openLoginModal = function () {
     modalInstance = $modal.open({
@@ -22,10 +25,10 @@ such.controller("MainController", function($scope, $http, $modal, User, Session)
       $scope.u = user;
       if (cb) cb();
     }, function(err) {
-      console.log(err);
       $scope.u = null;
     });
   };
+
 
   $scope.loginUser = function(loginObj) {
     Session.signin(loginObj.login, loginObj.password).success(function(res) {
@@ -62,5 +65,11 @@ such.controller("LoginCtrl", function($scope, $modalInstance, Session) {
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
+  };
+});
+
+such.controller("NotificationsCtrl", function($scope, $interval) {
+  $scope.closeAlert = function(index) {
+    $scope.notifications.splice(index, 1);
   };
 });

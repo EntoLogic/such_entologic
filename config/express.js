@@ -44,6 +44,8 @@ module.exports = function(app, passport, db) {
     app.use(passport.initialize());
     app.use(passport.session());
 
+    app.disable('x-powered-by');
+
     //routes should be at the last
     app.use(app.router);
     //TODO add 404, 500 here
