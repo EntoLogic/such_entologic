@@ -2,12 +2,32 @@
 // GLOBALish Controllers
 // =====================
 
-such.controller("MainController", function($scope, $http, $modal, User, Session, Notifications) {
+such.controller("MainController", function($scope,
+                                            $http,
+                                            $modal,
+                                            $timeout,
+                                            User,
+                                            Session,
+                                            Notifications) {
   $scope.u = 0; //Loading user data
   var modalInstance;
 
   $scope.notifications = [];
   Notifications.setNotificationArray($scope.notifications);
+
+  $scope.changingPage = false;
+  var changePageTimeout;
+  $scope.$on('$locationChangeStart', function (event, newLoc, oldLoc){
+    $scope.changingPage = true;
+  });
+
+  $scope.$on('$locationChangeSuccess', function (event, newLoc, oldLoc){
+    Notifications.pageChange();
+    $timeout.cancel(changePageTimeout);
+    changePageTimeout = $timeout(function() {
+      $scope.changingPage = false;
+    }, 300);
+  });
 
   $scope.openLoginModal = function () {
     modalInstance = $modal.open({
@@ -84,6 +104,13 @@ such.controller("NotificationsCtrl", function($scope, $interval) {
 
 such.controller("HomeCtrl", function($scope) {
 
+});
+
+such.controller("NotFoundCtrl", function($scope, Notifications) {
+  Notifications.add({
+    bsType: "danger",
+    msg: "Page not found!"
+  });
 });
 
 

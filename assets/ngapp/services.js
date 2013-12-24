@@ -24,7 +24,7 @@ such.factory("Notifications", function($interval) {
   // Notification Object
   // {
   //   bsType: "success|info|warning|danger",
-  //   title: "Important" optional
+  //   description: "Important" optional
   // TODO display notification title!
   //   msg: "Wow it did/didn't work",
   //   keepOnPageChange: true,
@@ -93,16 +93,13 @@ such.factory("Notifications", function($interval) {
 
 such.factory("mainInterceptor", function($q, Notifications) {
   return {
-   //  'request': function(config) {
-   //    return config || $q.when(config);
-   //  },
+    // request: function(config) {
+    //   return config;
+    // },
  
-   // 'requestError': function(rejection) {
-   //    if (canRecover(rejection)) {
-   //      return responseOrNewPromise
-   //    }
-   //    return $q.reject(rejection);
-   //  },
+    // requestError: function(rejection) {
+    //   return $q.reject(rejection);
+    // },
     response: function(response) {
       if (response.config.url == "/u/me" && (response.data.auth === 0)) {
         return $q.reject(response);
@@ -116,6 +113,7 @@ such.factory("mainInterceptor", function($q, Notifications) {
       // if (canRecover(rejection)) {
       //   return responseOrNewPromise
       // }
+      
       Notifications.addFromApiResponse(rejection.data);
       return $q.reject(rejection);
     }

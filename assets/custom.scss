@@ -27,9 +27,10 @@ body
 	min-height: 30px;
 	position: absolute;
 	bottom: 0;
+	right: 0;
+	left: 0;
 	padding-top: 5px;
 	border-top: 1px solid #e3e3e3;
-	width: 90%;
 }
 .navbar-ex1-collapse
 {
@@ -40,7 +41,8 @@ body
 {
 	width: 161px;
 	margin: 0 0 0 -83px; // half the width
-	display: inline-block;	position: absolute;
+	display: inline-block;
+	position: absolute;
 	left: 50%;
 	height: 100%;
 	transition: background-color 0.1s;
@@ -52,7 +54,11 @@ body
 	&:active
 	{
 		background-color: #d8d8d8;
-		padding: 0 13px;
+		.logo-img
+		{
+			transform: rotateX(-10deg) rotateY(10deg);
+			-webkit-transform: rotateX(-10deg) rotateY(10deg);
+		}
 	}
 	.logo-img
 	{

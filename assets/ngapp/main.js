@@ -9,6 +9,7 @@ such.config(function($routeProvider, $locationProvider) {
   }).when('/contribute', {
     templateUrl: 'views/contribute.html'
   }).otherwise({
-    redirectTo: '/'
+    controller: 'NotFoundCtrl',
+    templateUrl: 'notFound.html'
   });
 });

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="EntoLogic - Helps you understand code by getting it automatically explained in your spoken language.">
+  <meta name="description" content="EntoLogic - Helps you understand code by automatically explaining in your spoken language.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 	<title>EntoLogic - Automatically Explain Code</title>
@@ -81,7 +81,7 @@
   <div class="container" id="entologic-container">
     <section id="entologic-current-page">
       <ng-view>
-        EntoLogic helps you to understand code by getting it automatically explained in your spoken language. Contribute translations to other languages to make the system smarter.
+        EntoLogic helps you to understand code by automatically explaining in your spoken language. Contribute translations to other languages to make the system smarter.
         <div class="panel panel-danger">
           <div class="panel-heading">Error loading EntoLogic!</div>
           <div class="panel-body">
@@ -113,7 +113,7 @@
 
   <script type="text/ng-template" id="homepage.html">
     <h4 class="text-center">
-      EntoLogic helps you to understand code by getting it automatically explained in your spoken language.
+      EntoLogic helps you to understand code by automatically explaining in your spoken language.
     </h4>
   </script>
 
@@ -139,9 +139,13 @@
     </div>
   </script>
 
+  <script type="text/ng-template" id="notFound.html">
+    <h2>Page not found!</h2>
+  </script>
+
   <script type="text/ng-template" id="loadingBalls.html">
-    <div ng-transclude ng-hide="loading"></div>
-    <div id="followingBallsG" ng-show="loading">
+    <div ng-transclude ng-hide="changingPage"></div>
+    <div id="followingBallsG" ng-show="changingPage">
       <div id="followingBallsG_1" class="followingBallsG">
       </div>
       <div id="followingBallsG_2" class="followingBallsG">
