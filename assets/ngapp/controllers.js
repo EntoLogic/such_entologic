@@ -1,3 +1,7 @@
+// =====================
+// GLOBALish Controllers
+// =====================
+
 such.controller("MainController", function($scope, $http, $modal, User, Session, Notifications) {
   $scope.u = 0; //Loading user data
   var modalInstance;
@@ -73,3 +77,14 @@ such.controller("NotificationsCtrl", function($scope, $interval) {
     $scope.notifications.splice(index, 1);
   };
 });
+
+// =====================
+// Page Controllers
+// =====================
+
+such.controller("HomeCtrl", function($scope) {
+
+});
+
+
+

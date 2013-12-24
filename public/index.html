@@ -3,10 +3,10 @@
 <head>
 	<meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="EntoLogic - A new way to understand code by getting it automatically explained in your spoken language.">
+  <meta name="description" content="EntoLogic - Helps you understand code by getting it automatically explained in your spoken language.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
-	<title>EntoLogic</title>
+	<title>EntoLogic - Automatically Explain Code</title>
 
 	<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/custom.css">
@@ -22,7 +22,6 @@
 </head>
 <body ng-controller="MainController">
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
         <span class="sr-only">Toggle navigation</span>
@@ -31,33 +30,27 @@
         <span class="icon-bar"></span>
       </button>
       <div class="logo-img-container">
-        <img ng-src="/entologic-logo.png" alt="Entologic" class="logo-img">
+        <a href="/#/" loading-indicator-header>
+          <img src="/entologic-logo.png" alt="Entologic" class="logo-img">
+        </a>
       </div>
     </div>
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav navbar-left">
-        <li class="button-group-navbar">
-          <div class="btn-group navbar-btn">
-            <button type="button" class="btn btn-primary">Explain</button>
-            <button type="button" class="btn btn-default">Contribute</button>
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Help translate</a></li>
-              <li><a href="#">Add more programming languages</a></li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-
-      <!-- <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+        <a href="/#/" type="button" class="btn btn-primary navbar-btn">Explain</a>
+        <div class="btn-group navbar-btn">
+          <a class="btn btn-default" href="/#/contribute">Contribute</a>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Contribute menu</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/#/translate">Help translate</a></li>
+            <li><a href="/#/uast">Add more programming languages</a></li>
+            <li><a href="/#/about">About</a></li>
+          </ul>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form> -->
+      </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="button-group-navbar" ng-controller="UserCornerController">
           <div class="btn-group navbar-btn" ng-hide="u">
@@ -85,17 +78,44 @@
   </nav>
 
 
-  <div class="container">
-    <ng-view></ng-view>
+  <div class="container" id="entologic-container">
+    <section id="entologic-current-page">
+      <ng-view>
+        EntoLogic helps you to understand code by getting it automatically explained in your spoken language. Contribute translations to other languages to make the system smarter.
+        <div class="panel panel-danger">
+          <div class="panel-heading">Error loading EntoLogic!</div>
+          <div class="panel-body">
+            To use it you must have <a href="http://enable-javascript.com/">JavaScript enabled</a>!
+            <br>
+            We also highly recommend using a modern browser like <a href="https://www.google.com/chrome">Google Chrome</a>
+            or <a href="https://www.mozilla.org/firefox">Mozilla Firefox</a>
+          </div>
+        </div>
+      </ng-view>
+    </section>
+    <footer class="main-footer text-center">
+      EntoLogic was conceived and is designed in Dublin, Ireland.
+      However the project is developed internationally with the help of many generous contributors.
+      <ul class="list-inline">
+        <li><a href="/#/about">About</a></li>
+        <li><a href="/#/">Explain</a></li>
+        <li><a href="/#/contribute">Contribute</a></li>
+      </ul>
+    </footer>
   </div>
 
   <span class="notification-bar" ng-controller="NotificationsCtrl">
     <span ng-class="{'old-notification': n.old}" ng-repeat="n in notifications">
       <alert type="n.bsType"
-             close="closeAlert($index)">{{n.msg}}</alert>
+             close="closeAlert($index)"><span ng-bind="n.msg"></span></alert>
     </span>
   </span>
 
+  <script type="text/ng-template" id="homepage.html">
+    <h4 class="text-center">
+      EntoLogic helps you to understand code by getting it automatically explained in your spoken language.
+    </h4>
+  </script>
 
   <script type="text/ng-template" id="loginModal.html">
     <div class="modal-header">
@@ -118,5 +138,20 @@
       <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
   </script>
+
+  <script type="text/ng-template" id="loadingBalls.html">
+    <div ng-transclude ng-hide="loading"></div>
+    <div id="followingBallsG" ng-show="loading">
+      <div id="followingBallsG_1" class="followingBallsG">
+      </div>
+      <div id="followingBallsG_2" class="followingBallsG">
+      </div>
+      <div id="followingBallsG_3" class="followingBallsG">
+      </div>
+      <div id="followingBallsG_4" class="followingBallsG">
+      </div>
+    </div>
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.min.js"></script>
 </body>
 </html>
