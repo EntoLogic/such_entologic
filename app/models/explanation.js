@@ -3,23 +3,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     timestamps = require('mongoose-timestamp');
 
-// outputTree schema (must be 'mixed' type in mongoose)
-
-// NODE ->
-//  node: String,
-//  clauses: String or Node or Annotation,
-//  location: {start: [line, col], end: [line, col]}
-
-// future addition
-// ANNOTATION ->
-//  type: String,
-//  content: String
-
-
 var ExplanationSchema = new Schema({
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   plainCodeInput: {type: String, required: true},
   failure: [{errorMessage: String}],
-  outputTree: Schema.Types.Mixed,
+  outputTree: String,
   lastTranslated: Date,
   nLang: {type: String, required: true},
   pLang: {type: String, required: true}
@@ -28,9 +16,9 @@ var ExplanationSchema = new Schema({
 /**
  * Validations
  */
-ExplanationSchema.path('plainCodeInput').validate(function(code) {
-  return code && code.length;
-}, 'You must supply some souce code.');
+// ExplanationSchema.path('plainCodeInput').validate(function(code) {
+//   return code && code.length;
+// }, 'You must supply some souce code.');
 
 ExplanationSchema.plugin(timestamps);
 

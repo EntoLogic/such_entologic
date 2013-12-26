@@ -27,7 +27,7 @@ exports.session = function(req, res) {
  * Create user
  */
 exports.create = function(req, res) {
-  var user = new User(req.body);
+  var user = new User(req.body); // TODO, fix this only passing allowed attr's
 
   user.provider = 'local';
     

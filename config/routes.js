@@ -1,6 +1,7 @@
 module.exports = function(app, passport, auth) {
   //User Routes
   var users = require('../app/controllers/users');
+  var explanations = require('../app/controllers/explanations');
 
   // //Setting up the users api
   app.post('/u', users.create);
@@ -82,5 +83,7 @@ module.exports = function(app, passport, auth) {
   var home = require('../app/controllers/home');
   app.get('/test', home.test);
   app.get('/test_auth', auth.requiresLogin, home.test);
+
+  app.post('/e', explanations.create);
 
 };

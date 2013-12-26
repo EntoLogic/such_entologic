@@ -25,7 +25,7 @@ var PhraseSchema = new Schema({
   nLang: String,
   inUse: Boolean,
   voteCache: {type: Number, default: 0},
-  userId: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },

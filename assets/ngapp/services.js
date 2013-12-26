@@ -90,7 +90,6 @@ such.factory("Notifications", function($interval) {
   };
   return facObj;
 });
-
 such.factory("mainInterceptor", function($q, Notifications) {
   return {
     // request: function(config) {
