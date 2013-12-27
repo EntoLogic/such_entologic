@@ -1,7 +1,6 @@
 var mongoose = require('mongoose'),
     config = require('../../config/config'),
-    Schema = mongoose.Schema,
-    timestamps = require('mongoose-timestamp');
+    Schema = mongoose.Schema;
 
 // TODO Require validations (and others)
 
@@ -36,7 +35,6 @@ var PhraseSchema = new Schema({
   clauses: [ClauseSchema]
 });
 
-PhraseSchema.plugin(timestamps);
 
 /**
  * Validations

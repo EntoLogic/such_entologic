@@ -1,5 +1,6 @@
 module.exports = {
   db: "mongodb://localhost/entologic_dev",
+  // db: "mongodb://webApp:J4bH7u88I8ksIj0h1Hd6Hqbf@s10.entologic.net:5764/entologic_dev",
   sessionsSecret: "wowsoentologic",
   redis: {
     host: "localhost",

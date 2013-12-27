@@ -12,39 +12,38 @@
 // var superTimestamp = require(<plugin location string>);
 // var ThingSchema = new Schema({ ... });
 // ThingSchema.plugin(superTimestamp, {
-// 	 updatedAt: { index: true },
-// 	 createdAt: { index: true },
-// 	 lastPasswordChange: { modifyPaths: ["passwordHash"], index: true },
-// 	 lastAddressUpdate: { modifyPaths: ["street", "city", "postcode", "country"] }
+//   updatedAt: { index: true },
+//   createdAt: { index: true },
+//   lastPasswordChange: { modifyPaths: ["passwordHash"], index: true },
+//   lastAddressUpdate: { modifyPaths: ["street", "city", "postcode", "country"] }
 // });
 
-var _ = require("underscore");	
+var _ = require("underscore");  
 
-function superTimestamp(schema, timestamps) {
-	var pathsToAdd = {};
-	_.each(timestamps, function(options, timestampName) {
-		pathsToAdd[timestampName] = {type: Date, index: options.index};
-	});
-	schema.add(pathsToAdd);
+var superTimestamp = function(schema, timestamps) {
+  var pathsToAdd = {};
+  _.each(timestamps, function(options, timestampName) {
+    pathsToAdd[timestampName] = {type: Date, index: options.index};
+  });
+  schema.add(pathsToAdd);
 
   schema.pre('save', function (next) {
-  	var t = this;
-  	var ct = new Date;
-  	var modifiedPaths = t.modifiedPaths();
-  	if (schema.paths.updatedAt && modifiedPaths.length) {
-  		t.updatedAt = ct;
-  	};
-  	if (schema.paths.createdAt && t.isNew) {
-  		t.createdAt = ct;
-  	}
-  	console.log(modifiedPaths);
-  	_.each(_.omit(timestamps, "createdAt", "updatedAt"), function(options, timestampName) {
-  		if (_.intersection(modifiedPaths, options.modifyPaths).length) {
-  			t[timestampName] = ct;
-  			console.log(t.updatedAt);
-  		}
-  	});
-
+    var t = this;
+    var ct = new Date();
+    var modifiedPaths = t.modifiedPaths();
+    if (schema.paths.updatedAt && modifiedPaths.length) {
+      t.updatedAt = ct;
+    }
+    if (schema.paths.createdAt && t.isNew) {
+      t.createdAt = ct;
+    }
+    console.log(modifiedPaths);
+    _.each(_.omit(timestamps, "createdAt", "updatedAt"), function(options, timestampName) {
+      if (_.intersection(modifiedPaths, options.modifyPaths).length) {
+        t[timestampName] = ct;
+        console.log(t.updatedAt);
+      }
+    });
     next();
   });
 };

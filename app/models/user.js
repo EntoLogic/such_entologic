@@ -3,7 +3,7 @@
  */
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    timestamps = require('mongoose-timestamp'),
+    timestamps = require('./mongoose_plugins/super_timestamp'),
     bcrypt = require('bcrypt'),
     _ = require('underscore'),
     async = require("async"),
@@ -32,7 +32,8 @@ var UserSchema = new Schema({
   },
   twitter: {},
   github: {},
-  google: {}
+  google: {},
+  signInCount: Number
 });
 
 var apiSafeFields = {
@@ -166,10 +167,7 @@ UserSchema.pre('validate', function(next) {
       callback();
     }
   ],
-  // optional callback
   function(err, results){
-    // the results array will equal ['one','two'] even though
-    // the second function had a shorter timeout.
     next();
   });
 });
@@ -194,6 +192,10 @@ UserSchema.static('findForApi', function (q, callback) {
   this.findOne(q, apiSafeFields.randomUser, callback);
 });
 
-UserSchema.plugin(timestamps);
+UserSchema.plugin(timestamps, {
+  createdAt: { index: true },
+  updatedAt: { index: true },
+  lastSignInDate: { index: true, modifiyPaths: ["signInCount"] }
+});
 
 mongoose.model('User', UserSchema);

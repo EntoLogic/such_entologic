@@ -4,7 +4,6 @@ var mongoose    = require('mongoose'),
 exports.create = function(req, res) {
   var userId = req.user ? req.user._id : null;
   // var newExplanation = new Explanation({
-  console.log(req.body);
   new Explanation({
     user: userId,
     plainCodeInput: req.body.code,
@@ -17,7 +16,10 @@ exports.create = function(req, res) {
 };
 
 exports.show = function(req, res) {
-
+  Explanation.findById(req.params.eId, "-__v", function(err, ex) {
+    if (err) return res.json(err);
+    res.json(ex);
+  });
 };
 
 exports.update = function(req, res) {
