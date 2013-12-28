@@ -105,7 +105,13 @@ body
 		margin: 0;
 	}
 }
-// Custom Code Mirror resize
+
+.options-panel
+{
+	padding: 8px;
+}
+
+// Code Mirror stuff
 .CodeMirror {
   border: 1px solid #dddddd;
   height: auto;
@@ -114,9 +120,15 @@ body
   overflow-y: hidden;
   overflow-x: auto;
 }
-
-
-.options-panel
+.editor-settings
 {
-	padding: 8px;
+	.dropdown-menu
+	{			
+		max-height: 170px;
+		overflow-y: scroll;
+		li
+		{
+			font-size: 12px;
+		}
+	}
 }

@@ -110,7 +110,7 @@ such.controller("NotificationsCtrl", function($scope, $interval) {
 
 such.controller("ExplainCtrl", function($scope) {
   // Initial code content...
-  $scope.sourceCode = '2+2';
+  $scope.sourceCode = 'class Person\n  attr_reader :name, :age\n  def initialize(name, age)\n    @name, @age = name, age\n  end\n  def to_s\n    "#{name} (#{age})"\n  end\nend\n \ngroup = [\n  Person.new("Bob", 33),\n  Person.new("Chris", 16),\n  Person.new("Ash", 23)\n]\n \nputs group.sort.reverse';
 
   // Programming language
   $scope.modes = languageMetaData.programming;
@@ -160,16 +160,17 @@ such.controller('EditorCtrl', ['$scope', function($scope) {
     $scope.currentTheme = t;
     $scope.themeChanged();
   };
- 
+
   // The ui-codemirror option
   $scope.editorOptions = {
     // theme: $scope.currentTheme,
     lineNumbers: true,
-    indentWithTabs: false,
+    indentUnit: 2,
+    tabMode: "indent",
+    matchBrackets: true,
     viewportMargin: Infinity,
     mode: 'text/x-' + $scope.currentMode.name,
     onLoad: function(_cm){
-      console.log(_cm);
       // HACK to have the codemirror instance in the scope...
       $scope.modeChanged = function() {
         _cm.setOption("mode", 'text/x-' + $scope.currentMode.name);
