@@ -12,6 +12,8 @@ such.controller("MainController", function($scope,
   $scope.u = 0; //Loading user data
   var modalInstance;
 
+  $scope.navCollapsed = false;
+
   $scope.notifications = [];
   Notifications.setNotificationArray($scope.notifications);
 
@@ -106,9 +108,79 @@ such.controller("NotificationsCtrl", function($scope, $interval) {
 // Page Controllers
 // =====================
 
-such.controller("HomeCtrl", function($scope) {
+such.controller("ExplainCtrl", function($scope) {
+  // Initial code content...
+  $scope.sourceCode = '2+2';
 
+  // Programming language
+  $scope.modes = languageMetaData.programming;
+  $scope.currentMode = $scope.modes.ruby;
+  $scope.setMode = function(m) {
+    if (!$scope.modes[m]) {
+      $scope.currentMode = $scope.modes.ruby;
+      return;
+    }
+    $scope.currentMode = $scope.modes[m];
+    $scope.modeChanged();
+  };
+
+  // Spoken Language
+  $scope.spokens = languageMetaData.spoken;
+  $scope.currentSpoken = $scope.spokens.en;
+  $scope.setSpoken = function(s) {
+    if (!$scope.spokens[s]) {
+      $scope.currentSpoken = $scope.spokens.en;
+      return;
+    }
+    $scope.currentSpoken = $scope.spokens[s];
+  };
 });
+
+such.controller('EditorCtrl', ['$scope', function($scope) {
+  $scope.hideEditorSettings = true;
+  $scope.themes = [
+    "default",
+    "ambiance",
+    "3024-day",
+    "3024-night",
+    "blackboard",
+    "monokai",
+    "neat",
+    "solarized dark",
+    "solarized light",
+    "midnight",
+    "cobalt"
+  ];
+  $scope.currentTheme = "default";
+  $scope.setTheme = function(t) {
+    if ($scope.themes.indexOf(t) === -1) {
+      $scope.currentTheme = "default";
+      return;
+    }
+    $scope.currentTheme = t;
+    $scope.themeChanged();
+  };
+ 
+  // The ui-codemirror option
+  $scope.editorOptions = {
+    // theme: $scope.currentTheme,
+    lineNumbers: true,
+    indentWithTabs: false,
+    viewportMargin: Infinity,
+    mode: 'text/x-' + $scope.currentMode.name,
+    onLoad: function(_cm){
+      console.log(_cm);
+      // HACK to have the codemirror instance in the scope...
+      $scope.modeChanged = function() {
+        _cm.setOption("mode", 'text/x-' + $scope.currentMode.name);
+      };
+      $scope.themeChanged = function() {
+        _cm.setOption("theme", $scope.currentTheme);
+      };
+    }
+  };
+ 
+}]);
 
 such.controller("NotFoundCtrl", function($scope, Notifications) {
   Notifications.add({

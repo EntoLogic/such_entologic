@@ -9,21 +9,23 @@
 	<title>EntoLogic - Automatically Explain Code</title>
 
 	<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="/custom.css">
+	<link rel="stylesheet" type="text/css" href="/comp/all.css">
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.min.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-resource.min.js"></script>
-  <script type="text/javascript" src="/libs.min.js"></script>
-	<script type="text/javascript" src="/custom.js"></script>
+
+	<script type="text/javascript" src="/comp/custom.min.js"></script>
 
 	<script src="http://localhost:35729/livereload.js"></script>
 </head>
 <body ng-controller="MainController">
+  <!-- NAVBAR -->
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <button type="button" class="navbar-toggle" ng-click="navCollapsed = !navCollapsed">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -35,7 +37,7 @@
         </a>
       </div>
     </div>
-    <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <div class="collapse navbar-collapse navbar-ex1-collapse" collapse="navCollapsed">
       <ul class="nav navbar-nav navbar-left">
         <a href="/#/" type="button" class="btn btn-primary navbar-btn">Explain</a>
         <div class="btn-group navbar-btn">
@@ -47,6 +49,8 @@
           <ul class="dropdown-menu" role="menu">
             <li><a href="/#/translate">Help translate</a></li>
             <li><a href="/#/uast">Add more programming languages</a></li>
+            <li><a href="/#/donate">Donate</a></li>
+            <li role="presentation" class="divider"></li>
             <li><a href="/#/about">About</a></li>
           </ul>
         </div>
@@ -54,8 +58,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="button-group-navbar" ng-controller="UserCornerController">
           <div class="btn-group navbar-btn" ng-hide="u">
-            <button type="button" class="btn" 
-                    ng-class="{'btn-success': u === null}" 
+            <button type="button" class="btn btn-default"
                     ng-bind="u === 0 ? 'Loading...' : 'Login/Signup'"
                     ng-click="openLoginModal()"></button>
           </div>
@@ -77,17 +80,23 @@
     </div>
   </nav>
 
-
+  <!-- CONTAINER -->
   <div class="container" id="entologic-container">
     <section id="entologic-current-page">
       <ng-view>
-        EntoLogic helps you to understand code by automatically explaining in your spoken language. Contribute translations to other languages to make the system smarter.
+        EntoLogic helps you to understand code by automatically explaining in your spoken language.
+        Get your code explained here or help out by contributing translations to other languages to make the system smarter.
+        You may also help by writing adapters for more programming languages. Check out the Contribute page for more information...
         <div class="panel panel-danger">
-          <div class="panel-heading">Error loading EntoLogic!</div>
+          <div class="panel-heading"><h3>Error loading EntoLogic!</h3></div>
           <div class="panel-body">
             To use it you must have <a href="http://enable-javascript.com/">JavaScript enabled</a>!
             <br>
-            We also highly recommend using a modern browser like <a href="https://www.google.com/chrome">Google Chrome</a>
+            <b>
+              THERE IS NO SUPPORT FOR ENTLOGIC IN INTERNET EXPLORER VERSIONS BELOW 10! and many other old browsers.
+            </b>
+            <br>
+            We highly recommend using a modern browser like <a href="https://www.google.com/chrome">Google Chrome</a>
             or <a href="https://www.mozilla.org/firefox">Mozilla Firefox</a>
           </div>
         </div>
@@ -104,6 +113,7 @@
     </footer>
   </div>
 
+  <!-- NOTIFICATIONS -->
   <span class="notification-bar" ng-controller="NotificationsCtrl">
     <span ng-class="{'old-notification': n.old}" ng-repeat="n in notifications">
       <alert type="n.bsType"
@@ -111,12 +121,92 @@
     </span>
   </span>
 
-  <script type="text/ng-template" id="homepage.html">
+
+<!-- 
+  =========
+    LOCAL
+  TEMPLATES
+  =========
+ -->
+  <!-- HOME -->
+  <script type="text/ng-template" id="explain.html">
     <h4 class="text-center">
       EntoLogic helps you to understand code by automatically explaining in your spoken language.
     </h4>
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body options-panel">
+          <div class="row">
+            <div class="col-md-6">
+              Take my code written in  
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                  <span ng-bind="currentMode.fullName"></span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li ng-repeat="(m, info) in modes | orderBy:'toString()'">
+                    <a href="" ng-bind="info.fullName" ng-click="setMode(m)"></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              and
+              <button type="button" class="btn btn-success btn-sm">Explain It</button>
+              to me in
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                  <span ng-bind="currentSpoken.en"></span>
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li ng-repeat="(s, info) in spokens | orderBy:'toString()'">
+                    <a href="" ng-bind="info.en" ng-click="setSpoken(s)"></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-md-6">
+        <section ng-controller="EditorCtrl">
+          <textarea ui-codemirror="editorOptions" ng-model="sourceCode"></textarea>
+          <a href="" ng-click="hideEditorSettings = !hideEditorSettings" class="label label-default">
+            Editor Settings <span class="caret"></span>
+          </a>
+          <div collapse="hideEditorSettings" class="well well-sm">
+            Theme: 
+            <div class="btn-group btn-group-xs">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span ng-bind="currentTheme"></span> <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="" ng-click="setTheme('default')">default theme</a></li>
+                <li class="divider"></li>
+                <li ng-repeat="t in themes | orderBy:'toString()'">
+                  <a href="" ng-bind="t" ng-click="setTheme(t)"></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-body options-panel">
+            
+          </div>
+        </div>
+        {{sourceCode}}
+      </div>
+    </div>
   </script>
 
+  <!-- LOGIN MODAL -->
   <script type="text/ng-template" id="loginModal.html">
     <div class="modal-header">
       <h3>Login/Register</h3>
@@ -156,6 +246,5 @@
       </div>
     </div>
   </script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.min.js"></script>
 </body>
 </html>
