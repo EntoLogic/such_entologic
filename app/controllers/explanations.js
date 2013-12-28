@@ -10,7 +10,7 @@ exports.create = function(req, res) {
     pLang: req.body.pLang,
     nLang: req.body.nLang
   }).save(function(err, newExplanation) {
-    if (err) return res.json(err);
+    if (err) return res.json(err); // TODO: only send back required info
     res.json(newExplanation);
   });
 };

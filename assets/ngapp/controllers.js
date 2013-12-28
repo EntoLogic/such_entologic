@@ -78,6 +78,10 @@ such.controller("MainController", function($scope,
     });
   };
 
+  $scope.hardReload = function() {
+    location.reload();
+  };
+
   $scope.getUserDetails();
 });
 

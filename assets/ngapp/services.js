@@ -25,7 +25,7 @@ such.factory("Notifications", function($interval) {
   // {
   //   bsType: "success|info|warning|danger",
   //   description: "Important" optional
-  // TODO display notification title!
+  // TODO display notification description!
   //   msg: "Wow it did/didn't work",
   //   keepOnPageChange: true,
   //   old: false,
@@ -60,7 +60,24 @@ such.factory("Notifications", function($interval) {
         facObj.add(n);
       });
     },
-    addFromApiResponse: function(res) {
+    addFromApiResponse: function(response) {
+      var res = response.data;
+      if (typeof res === 'string') {
+        if (response.status === 403) {
+          facObj.addList([{
+                           bsType: "danger",
+                           msg: "Server communication failure! Please reload the page!",
+                           keepOnPageChange: true
+                         }]);
+        } else {
+          facObj.addList([{
+                           bsType: "danger",
+                           msg: "Unknown server error! Please reload the page!",
+                           keepOnPageChange: true
+                         }]);
+        }
+        return;
+      }
       var notificationsToAdd = [];
       var bsTypeMap = {errors: "danger", alerts: "info", yays: "success"};
       angular.forEach(bsTypeMap, function(bsType, apiName){
@@ -100,10 +117,11 @@ such.factory("mainInterceptor", function($q, Notifications) {
     //   return $q.reject(rejection);
     // },
     response: function(response) {
+      if (response.config.url[0] != "/") return response;
       if (response.config.url == "/u/me" && (response.data.auth === 0)) {
         return $q.reject(response);
       }
-      Notifications.addFromApiResponse(response.data);
+      Notifications.addFromApiResponse(response);
       return response;
     },
  
@@ -113,7 +131,7 @@ such.factory("mainInterceptor", function($q, Notifications) {
       //   return responseOrNewPromise
       // }
       
-      Notifications.addFromApiResponse(rejection.data);
+      Notifications.addFromApiResponse(rejection);
       return $q.reject(rejection);
     }
   };

@@ -9,12 +9,11 @@ module.exports = function(app, passport, db) {
   app.use(express.logger("short"));
   app.set('showStackError', true);
 
-  //Setting the static folder
-  app.use(express.favicon(config.root + '/public/favicon.ico'));
-  app.use(express.static(config.root + '/public'));
-
   app.configure(function() {
-    //cookieParser should be above session
+    //Setting the static folder
+    app.use(express.favicon(config.root + '/public/favicon.ico'));
+    app.use(express.static(config.root + '/public'));    //cookieParser should be above session
+
     app.use(express.cookieParser());
 
     // request body parsing middleware should be above methodOverride
@@ -39,15 +38,23 @@ module.exports = function(app, passport, db) {
 
     //express/mongo session storage
     app.use(express.session(redisObject));
+    // app.use(express.csrf({value: csrfValue}))
 
     //use passport session
     app.use(passport.initialize());
     app.use(passport.session());
 
+    app.use(express.csrf());
+    app.use(function(req, res, next) {
+      res.cookie('XSRF-TOKEN', req.csrfToken());
+      next();
+    });
+
     app.disable('x-powered-by');
 
     //routes should be at the last
     app.use(app.router);
+
     //TODO add 404, 500 here
   });
 };
