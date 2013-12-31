@@ -1,0 +1,15 @@
+@keyframes blink {
+    0% { opacity: 0.3; }
+    80% { opacity: 0.9; }
+    100% { opacity: 1; }
+}
+@-webkit-keyframes blink {
+    0% { opacity: 0.3; }
+    80% { opacity: 0.9; }
+    100% { opacity: 1; }
+}
+.flash-anim {
+  -webkit-animation: blink 0.2s linear 0s 4;
+  -moz-animation: blink 0.2s linear 0s 4;
+  animation: blink 0.2s linear 0s 4;
+}

@@ -27,7 +27,7 @@ var superTimestamp = function(schema, timestamps) {
   });
   schema.add(pathsToAdd);
 
-  schema.pre('save', function (next) {
+  schema.pre('validate', function (next) {
     var t = this;
     var ct = new Date();
     var modifiedPaths = t.modifiedPaths();
@@ -37,11 +37,9 @@ var superTimestamp = function(schema, timestamps) {
     if (schema.paths.createdAt && t.isNew) {
       t.createdAt = ct;
     }
-    console.log(modifiedPaths);
     _.each(_.omit(timestamps, "createdAt", "updatedAt"), function(options, timestampName) {
       if (_.intersection(modifiedPaths, options.modifyPaths).length) {
         t[timestampName] = ct;
-        console.log(t.updatedAt);
       }
     });
     next();

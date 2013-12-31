@@ -86,5 +86,6 @@ module.exports = function(app, passport, auth) {
 
   app.post('/e', explanations.create);
   app.get('/e/:eId', explanations.show);
+  app.post('/e/:eId', explanations.update);
 
 };

@@ -38,7 +38,8 @@
     "grunt-nodemon": "0.1.x",
     "grunt-concurrent": "0.4.x",
     "grunt-contrib-concat": "0.3.x",
-    "grunt-contrib-uglify": "~0.2.x",
-    "grunt-contrib-cssmin": "0.7.x"
+    "grunt-contrib-uglify": "0.2.x",
+    "grunt-contrib-cssmin": "0.7.x",
+    "grunt-sloc": "0.4.2"
   }
 }

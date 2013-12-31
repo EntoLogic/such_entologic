@@ -2,17 +2,11 @@
 // GLOBALish Controllers
 // =====================
 
-such.controller("MainController", function($scope,
-                                            $http,
-                                            $modal,
-                                            $timeout,
-                                            User,
-                                            Session,
-                                            Notifications) {
+such.controller("MainController", function($scope, $http, $modal, $timeout, $window, User, Session, Notifications) {
   $scope.u = 0; //Loading user data
   var modalInstance;
 
-  $scope.navCollapsed = false;
+  $scope.navCollapsed = true;
 
   $scope.notifications = [];
   Notifications.setNotificationArray($scope.notifications);
@@ -31,18 +25,15 @@ such.controller("MainController", function($scope,
     }, 300);
   });
 
-  $scope.openLoginModal = function () {
+  $scope.openLoginModal = function(action) {
     modalInstance = $modal.open({
       templateUrl: 'loginModal.html',
       controller: "LoginCtrl",
-      scope: $scope
+      scope: $scope,
+      resolve: {
+        triedAction: function() {return action;}
+      }
     });
-
-    // modalInstance.result.then(function (selectedItem) {
-    //   $scope.selected = selectedItem;
-    // }, function () {
-    //   $log.info('Modal dismissed at: ' + new Date());
-    // });
   };
 
   $scope.getUserDetails = function(cb) {
@@ -64,7 +55,6 @@ such.controller("MainController", function($scope,
           modalInstance = null;
         }
       });
-
     }).error(function(resErr) {
       $scope.u = null;
     });
@@ -76,7 +66,11 @@ such.controller("MainController", function($scope,
     Session.signout().success(function(res) {
       $scope.u = null;
     }).error(function(res) {
-
+      Notifications.add({
+        bsType: "danger",
+        msg: "Error logging out!",
+        timeout: 12
+      });
     });
   };
 
@@ -90,9 +84,11 @@ such.controller("MainController", function($scope,
 such.controller("UserCornerController", function($scope) {
 });
 
-such.controller("LoginCtrl", function($scope, $modalInstance, Session) {
+such.controller("LoginCtrl", function($scope, $modalInstance, Session, triedAction) {
   $scope.loginForm = {};
-
+  if (triedAction) {
+    $scope.actionMessage = "You must have an account to " + triedAction + ".";
+  }
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
@@ -104,39 +100,106 @@ such.controller("NotificationsCtrl", function($scope, $interval) {
   };
 });
 
-// =====================
-// Page Controllers
-// =====================
+// ======================
+//    Page Controllers
+// ======================
 
-such.controller("ExplainCtrl", function($scope) {
-  // Initial code content...
-  $scope.sourceCode = 'class Person\n  attr_reader :name, :age\n  def initialize(name, age)\n    @name, @age = name, age\n  end\n  def to_s\n    "#{name} (#{age})"\n  end\nend\n \ngroup = [\n  Person.new("Bob", 33),\n  Person.new("Chris", 16),\n  Person.new("Ash", 23)\n]\n \nputs group.sort.reverse';
-
+such.controller("ExplainCtrl", function($scope, $interval, $location, $routeParams, Explanation, Notifications) {
   // Programming language
   $scope.modes = languageMetaData.programming;
-  $scope.currentMode = $scope.modes.ruby;
-  $scope.setMode = function(m) {
-    if (!$scope.modes[m]) {
-      $scope.currentMode = $scope.modes.ruby;
-      return;
-    }
-    $scope.currentMode = $scope.modes[m];
-    $scope.modeChanged();
-  };
-
   // Spoken Language
   $scope.spokens = languageMetaData.spoken;
-  $scope.currentSpoken = $scope.spokens.en;
+
+  var providedId = $routeParams.eId;
+  $scope.setupNewExp = function(s) {
+    $scope.exp = new Explanation({
+      plainCodeInput: s || "# Type code here",
+      pLang: "ruby",
+      nLang: "en",
+      translatorMessages: []
+    });
+  };
+
+  var persistedExp = {};
+
+  if (typeof providedId === 'string') {
+    if (providedId.length === 24) {
+      Explanation.get({eId: providedId}, function(savedExp) {
+        angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
+        $scope.exp = savedExp;
+      }, function(errorResponse) {
+        $scope.setupNewExp();
+        // $scope.exp.translatorMessages.push({msg: "Could not find explanation!", msgType: "error"});
+      });
+    } else {
+      $scope.setupNewExp();
+      if (providedId !== "new") {
+        Notifications.add({
+          bsType: "danger",
+          msg: "Invalid explanation id '" + providedId + "'",
+          timeout: 30
+        });
+      }
+    }
+  } else {
+    // Initial code content...
+    var sampleSource = 'class Person\n  attr_reader :name, :age\n  def initialize(name, age)\n    @name, @age = name, age\n  end\n  def to_s\n    "#{name} (#{age})"\n  end\nend\n \ngroup = [\n  Person.new("Bob", 33),\n  Person.new("Chris", 16),\n  Person.new("Ash", 23)\n]\n \nputs group.sort.reverse';
+    $scope.setupNewExp(sampleSource);
+  }
+
+  // $scope.$watch("exp.updateAt", function() {
+  // Every time source code changes or codemirror is blured it's undefined and then back: Quick fix
+  var currentSource = $scope.exp || '';
+  $scope.$watch("exp", function() {
+    $scope.showOutputPane = $scope.exp && (($scope.exp.translatorMessages && $scope.exp.translatorMessages.length) || $scope.exp.outputTree);
+  }, true);
+
   $scope.setSpoken = function(s) {
     if (!$scope.spokens[s]) {
-      $scope.currentSpoken = $scope.spokens.en;
+      $scope.exp.nLang = "en";
       return;
     }
-    $scope.currentSpoken = $scope.spokens[s];
+    $scope.exp.nLang = s;
+  };
+  $scope.setMode = function(m) {
+    if (!$scope.modes[m]) {
+      $scope.exp.pLang = "ruby";
+      return;
+    }
+    $scope.exp.pLang = m;
+  };
+
+  $scope.explainNow = function() {
+    // TODO Set readonly on codemirror
+    //      Show progress bar + disable options at the top
+
+    // $scope.exp.lastTranslated = null; // Make sure that the translator is to translate it. CAN'T do this anymore
+    $scope.exp.saved = undefined; // Set saved to undefined as explaining should not change it
+    $scope.exp.saving = true; // Show loading on save button. Will be removed by mongoose anyway.
+    // $scope.exp = $scope.exp.$save();
+    $scope.exp.$save({explain: "yes"}, function(savedExp) {
+      angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
+      $scope.exp = savedExp;
+    }, function(errorResponse) {
+      $scope.exp.saving = undefined;
+      // Notification errors should be enough
+    });
+  };
+
+  $scope.saveForLater = function() {
+    $scope.exp.saving = true; // Show loading on save button. Will be removed by mongoose anyway.
+    $scope.exp.saved = $scope.exp.saved || 1; // Set to public unless already specified
+    $scope.exp.$save(function(savedExp) {
+      angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
+      $scope.exp = savedExp;
+    }, function(errorResponse) {
+      $scope.exp.saving = undefined;
+      // Notification errors should be enough
+    });
   };
 });
 
-such.controller('EditorCtrl', ['$scope', function($scope) {
+such.controller('EditorCtrl', function($scope, $timeout) {
   $scope.hideEditorSettings = true;
   $scope.themes = [
     "default",
@@ -163,25 +226,36 @@ such.controller('EditorCtrl', ['$scope', function($scope) {
 
   // The ui-codemirror option
   $scope.editorOptions = {
-    // theme: $scope.currentTheme,
+    theme: $scope.currentTheme,
     lineNumbers: true,
     indentUnit: 2,
     tabMode: "indent",
     matchBrackets: true,
+    autoCloseBrackets: true,
     viewportMargin: Infinity,
-    mode: 'text/x-' + $scope.currentMode.name,
+    tabindex: 1,
+    autofocus: true,
+    mode: 'text/x-' + ($scope.exp ? $scope.exp.pLang : ""), // this one should be fine as opposed to the below
+    // mode: 'text/x-' + $scope.modes[$scope.exp.pLang].name,
     onLoad: function(_cm){
-      // HACK to have the codemirror instance in the scope...
-      $scope.modeChanged = function() {
-        _cm.setOption("mode", 'text/x-' + $scope.currentMode.name);
-      };
+      $scope.$watch("exp.pLang", function(newVal, oldVal) {
+        _cm.setOption("mode", 'text/x-' + newVal);
+      });
       $scope.themeChanged = function() {
         _cm.setOption("theme", $scope.currentTheme);
       };
+      // var codeUpdateTimeout;
+      // // Not (ng-model not working for some reason): Obsolete: Update scope on code change
+      // _cm.on("change", function() {
+      //   $timeout.cancel(codeUpdateTimeout);
+      //   codeUpdateTimeout = $timeout(function() {
+      //     $scope.exp.plainCodeInput = _cm.getValue();
+      //   }, 500);
+      // });
     }
   };
  
-}]);
+});
 
 such.controller("NotFoundCtrl", function($scope, Notifications) {
   Notifications.add({

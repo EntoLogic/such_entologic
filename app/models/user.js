@@ -37,8 +37,8 @@ var UserSchema = new Schema({
 });
 
 var apiSafeFields = {
-  me: "-_id email username realName provider",
-  randomUser: "-_id username realName"
+  me: "_id email username realName provider",
+  randomUser: "_id username realName"
 };
 _.each(apiSafeFields, function(value, key, obj) {
   apiSafeFields[key + "Array"] = value.split(" ");
@@ -121,10 +121,10 @@ UserSchema.pre('validate', function(next) {
         if(err) {
           callback(err);
         } else if(userObj) {
-          if (userObj.email == user.email) {
+          if (userObj.email === user.email) {
             user.invalidate("email", "must be unique");
           }
-          if (userObj.username == user.username) {
+          if (userObj.username === user.username) {
             user.invalidate("username", "must be unique");
           }
           callback();

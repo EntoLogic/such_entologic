@@ -1,11 +1,14 @@
 such.factory("User", function($resource) {
   return $resource('/u/:username', {
-    email: '@email',
-    username: '@username',
-    realName: '@realName',
-    provider: '@provider'
+    username: '@username'
   }, {
     me: {method: 'GET', params: {username: 'me'}, isArray: false}
+  });
+});
+
+such.factory("Explanation", function($resource) {
+  return $resource('/e/:eId', { 
+    eId: "@_id"
   });
 });
 
@@ -20,7 +23,7 @@ such.factory("Session", function($http) {
   };
 });
 
-such.factory("Notifications", function($interval) {
+such.factory("Notifications", function($interval, $window) {
   // Notification Object
   // {
   //   bsType: "success|info|warning|danger",
@@ -33,7 +36,10 @@ such.factory("Notifications", function($interval) {
   // }
   var notifications;
   $interval(function() {
-    for (var i = notifications.length - 1; i >= 0; i--) {
+    if (!notifications) return;
+    var nl = notifications.length;
+    if (nl === 0) return;
+    for (var i = nl - 1; i >= 0; i--) {
       if (notifications[i].timeout) { notifications[i].timeout -= 1; }
       if (notifications[i].timeout === 0) {
         notifications.splice(i, 1);
@@ -63,10 +69,10 @@ such.factory("Notifications", function($interval) {
     addFromApiResponse: function(response) {
       var res = response.data;
       if (typeof res === 'string') {
-        if (response.status === 403) {
+        if (response.status === 403 || response.status === 401) {
           facObj.addList([{
                            bsType: "danger",
-                           msg: "Server communication failure! Please reload the page!",
+                           msg: "Server authorisation failure! Please reload the page!",
                            keepOnPageChange: true
                          }]);
         } else {
@@ -107,6 +113,7 @@ such.factory("Notifications", function($interval) {
   };
   return facObj;
 });
+
 such.factory("mainInterceptor", function($q, Notifications) {
   return {
     // request: function(config) {
@@ -139,4 +146,30 @@ such.factory("mainInterceptor", function($q, Notifications) {
 
 such.config(function($httpProvider) {
   $httpProvider.interceptors.push('mainInterceptor');
+});
+
+such.filter('attrEq', function() {
+  return function(inputArray, attrName, attrValue) {
+    var filteredArray = [];
+    angular.forEach(inputArray, function(obj){
+      if (!(obj[attrName])) return;
+      if (attrValue && obj[attrName] == attrValue) { // Only a double equals becuase numbers :)
+        filteredArray.push(obj);
+      }
+    });
+    return filteredArray;
+  };
+});
+
+such.filter('truncate', function () {
+  return function (text, length, end) {
+    console.log(text, length, end);
+    if (isNaN(length)) length = 10;
+    if (end === undefined) end = "...";
+    if (text.length <= length || text.length - end.length <= length) {
+      return text;
+    } else {
+      return String(text).substring(0, length-end.length) + end;
+    }
+  };
 });

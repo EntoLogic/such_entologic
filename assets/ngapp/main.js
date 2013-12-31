@@ -7,6 +7,11 @@ such.config(function($routeProvider, $locationProvider) {
   $routeProvider.when('/', {
     templateUrl: 'explain.html',
     controller: 'ExplainCtrl'
+  }).when('/exp/:eId', {
+    templateUrl: 'explain.html',
+    controller: 'ExplainCtrl'
+  }).when('/exp', {
+    redirectTo: "/"
   }).when('/about', {
     templateUrl: 'views/about.html'
   }).when('/contribute', {
@@ -17,19 +22,38 @@ such.config(function($routeProvider, $locationProvider) {
   });
 });
 
+such.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field] > b[field]);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
+});
+
+
 // LANGS JSON FILE FROM META
 var languageMetaData = {
   "spoken": {
     "en": {
+      "code": "en",
       "en": "English"
     },
     "fr": {
+      "code": "fr",
       "en": "French"
     }, 
     "de": {
+      "code": "de",
       "en": "German"
     }, 
     "it": {
+      "code": "ie",
       "en": "Italian"
     }
   },
@@ -45,9 +69,8 @@ var languageMetaData = {
     },
     "java": {
       "fullName": "Java",
-      "name": "java",
-      "cmMode": "clike"
-    }
+      "name": "java"
+    },
   }
 };
 

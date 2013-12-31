@@ -38,18 +38,18 @@ module.exports = function(app, passport, db) {
 
     //express/mongo session storage
     app.use(express.session(redisObject));
-    // app.use(express.csrf({value: csrfValue}))
 
     //use passport session
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use(express.csrf());
-    app.use(function(req, res, next) {
-      res.cookie('XSRF-TOKEN', req.csrfToken());
-      next();
-    });
-
+    if (!config.disableXsrfProtection) {
+      app.use(express.csrf());
+      app.use(function(req, res, next) {
+        res.cookie('XSRF-TOKEN', req.csrfToken());
+        next();
+      });
+    }
     app.disable('x-powered-by');
 
     //routes should be at the last

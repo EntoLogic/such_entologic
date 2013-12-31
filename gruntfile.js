@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['assets/**/*.js', 'app/**/*.js'],
-        tasks: ['jshint', 'uglify'],
+        tasks: ['jshint', 'uglify', 'sloc'],
         options: {
           livereload: true,
         },
@@ -34,24 +34,27 @@ module.exports = function(grunt) {
     jshint: {
       all: ['gruntfile.js', 'assets/ngapp/**/*.js', 'app/**/*.js']
     },
-    // concat: {
-    //   options: {
-    //     separator: ';',
-    //   },
-    //   dist: {
-    //     src: [
-    //          ],
-    //     dest: 'public/custom.js',
-    //   }
-    // },
+    sloc: {
+      options: {
+        reportType: 'json',
+        reportPath: 'sloc.json',
+      },
+      'my-source-files': {
+      files: {
+        '.': [ 'app/**/*.js', 'assets/ngapp/**.js', 'config/**/*.js' ]
+      },
+      }
+    },
     uglify: {
       options: {
-        mangle: false
+        mangle: false,
+        beautify: true
       },
       my_target: {
         files: {
           'public/comp/custom.min.js': [
             'assets/lib/cm_mode*',
+            'assets/lib/cm_addon*',
             'assets/lib/ui-bootstrap-tpls-0.7.0.js',
             'assets/lib/extra.js',
             'assets/lib/ui-codemirror.js',
@@ -104,14 +107,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  // grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-sloc');
 
   //Making grunt default to force in order not to break the project.
   grunt.option('force', true);
 
   //Default task(s).
-  grunt.registerTask('default', ['jshint', 'uglify', 'sass', 'cssmin', 'concurrent']);
+  grunt.registerTask('default', ['jshint', 'uglify', 'sass', 'cssmin', 'sloc', 'concurrent']);
 };

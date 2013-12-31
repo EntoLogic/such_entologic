@@ -58,3 +58,9 @@ require('./config/routes')(app, passport, auth);
 var port = process.env.PORT || config.port;
 app.listen(port);
 console.log('started on port ' + port);
+
+repl.start({
+  prompt: "node via stdin> ",
+  input: process.stdin,
+  output: process.stdout
+});

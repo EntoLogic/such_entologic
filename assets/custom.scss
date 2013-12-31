@@ -17,9 +17,19 @@ body
 }
 #entologic-current-page
 {
-	padding: 60px 0 60px 0;
+	padding: 60px 0 110px 0;
 	min-height: 100%;
 	position: relative;
+}
+.popover-title
+{
+	font-size: 13px;
+	padding: 3px 4px;
+}
+.popover-content
+{
+	font-size: 12px;
+	padding: 3px 4px;
 }
 .main-footer
 {
@@ -44,9 +54,9 @@ body
 	display: inline-block;
 	position: absolute;
 	left: 50%;
-	height: 100%;
+	height: 50px;
 	transition: background-color 0.1s;
-	padding: 0 10px;
+	padding: 0 3px;
 	&:hover
 	{
 		background-color: #e8e8e8;
@@ -54,25 +64,36 @@ body
 	&:active
 	{
 		background-color: #d8d8d8;
-		.logo-img
+		.beta-label, .logo-img
 		{
-			transform: rotateX(-10deg) rotateY(10deg);
-			-webkit-transform: rotateX(-10deg) rotateY(10deg);
+			transform: rotateX(10deg) rotateY(-10deg);
+			-webkit-transform: rotateX(10deg) rotateY(-10deg);
 		}
 	}
 	.logo-img
 	{
 		margin: 8px 0 0 0;
-		width: 100%;
+		width: auto;
+	}
+	.beta-label
+	{
+		opacity: 0.9;
+		// transform:rotate(-7deg);
+		// -ms-transform:rotate(-7deg); /* IE 9 */
+		// -webkit-transform:rotate(-7deg); /* Safari and Chrome */
+		position: absolute;
+		top: -2px;
+		left: 130px;
 	}
 }
 .notification-bar
 {
-	height: 29px;
+	height: 83px;
 	z-index: 2000;
 	position: fixed;
 	display: inline;
 	bottom: 0px;
+	padding-bottom: 54px;
 	.old-notification
 	{
 		opacity: 0.6;
@@ -124,11 +145,15 @@ body
 {
 	.dropdown-menu
 	{			
-		max-height: 170px;
+		max-height: 153px;
 		overflow-y: scroll;
 		li
 		{
 			font-size: 12px;
 		}
 	}
+}
+.translator-message-list
+{
+	margin-bottom: 0;
 }
