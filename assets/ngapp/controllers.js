@@ -4,9 +4,11 @@
 
 such.controller("MainController", function($scope, $window, $location, $modal, $timeout, User, Session, Notifications) {
   // If mobile and going to root, redirect to about
-  if ($window.innerWidth < 768 && $location.path() == "/") {
-    $location.path("/about");
-  }
+  $timeout(function() {
+    if ($window.innerWidth < 768 && $location.path() == "/") {
+      $location.path("/about");
+    }
+  }, 100);
 
   $scope.u = 0; //Loading user data
   var modalInstance;
@@ -49,7 +51,6 @@ such.controller("MainController", function($scope, $window, $location, $modal, $
       $scope.u = null;
     });
   };
-
 
   $scope.loginUser = function(loginObj) {
     Session.signin(loginObj.login, loginObj.password).success(function(res) {
