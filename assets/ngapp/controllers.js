@@ -2,7 +2,12 @@
 // GLOBALish Controllers
 // =====================
 
-such.controller("MainController", function($scope, $http, $modal, $timeout, $interval, User, Session, Notifications) {
+such.controller("MainController", function($scope, $window, $location, $modal, $timeout, User, Session, Notifications) {
+  // If mobile and going to root, redirect to about
+  if ($window.innerWidth < 768 && $location.path() == "/") {
+    $location.path("/about");
+  }
+
   $scope.u = 0; //Loading user data
   var modalInstance;
 
@@ -91,7 +96,7 @@ such.controller("LoginCtrl", function($scope, $modalInstance, Session, triedActi
   };
 });
 
-such.controller("NotificationsCtrl", function($scope, $interval) {
+such.controller("NotificationsCtrl", function($scope) {
   $scope.closeAlert = function(index) {
     $scope.notifications.splice(index, 1);
   };
@@ -101,7 +106,7 @@ such.controller("NotificationsCtrl", function($scope, $interval) {
 //    Page Controllers
 // ======================
 
-such.controller("ExplainCtrl", function($scope, $interval, $timeout, $location, $routeParams, Explanation, User, Notifications) {
+such.controller("ExplainCtrl", function($scope, $interval, $location, $routeParams, Explanation, User, Notifications) {
   // Programming language
   $scope.modes = languageMetaData.programming;
   // Spoken Language
