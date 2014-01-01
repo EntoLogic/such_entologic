@@ -132,9 +132,9 @@
  -->
   <!-- HOME/Explain -->
   <script type="text/ng-template" id="explain.html">
-    <h4 class="text-center">
+    <p class="text-center lead">
       EntoLogic helps you to understand code by automatically explaining in your spoken language.
-    </h4>
+    </p>
     <div class="panel panel-default explanation-panel" ng-show="!exp.user || (exp.user === u._id)">
       <div class="panel-body options-panel" ng-hide="percentageDone">
         Take my code written in  
@@ -301,10 +301,12 @@
     </div>
   </script>
 
+  <!-- NOT FOUND -->
   <script type="text/ng-template" id="notFound.html">
     <h2>Page not found!</h2>
   </script>
 
+  <!-- LOADING ICON -->
   <script type="text/ng-template" id="loadingBalls.html">
     <div ng-transclude ng-hide="changingPage"></div>
     <div id="followingBallsG" ng-show="changingPage">
