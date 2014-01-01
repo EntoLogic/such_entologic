@@ -25,10 +25,27 @@ exports.create = function(req, res) {
 exports.show = function(req, res) {
   var sessId = req.sessionID;
   var userId = req.user && req.user._id;
-  Explanation.findOne({_id: req.params.eId, $or: [{sessionId: sessId}, {user: userId}, {saved: 1}, {saved: 2, user: userId}]}, function(err, exp) {
+  Explanation.findOne({
+    _id: req.params.eId,
+    $or: [
+      {sessionId: sessId},
+      {user: userId},
+      {saved: 1},
+      {saved: 2, user: userId}
+    ]
+  }, function(err, exp) {
     if (err) return res.json(err); // TODO: only send back required info
     if (exp) {
-      res.json(exp.forApi());
+      if (exp.lastTranslated) { // Only may be accessed when last translated is not null
+        res.json(exp.forApi());
+      } else {
+        // This is terrible but
+        if (req.query.empty) {
+          res.json(404, {});
+        } else {
+          res.json(404, {errors: ["Explanation may not be accessed during translation."]});
+        }
+      }
     } else {
       res.json(404, {errors: ["Could not find Explanation with that id!"]});
     }
@@ -41,6 +58,9 @@ exports.update = function(req, res) {
   Explanation.findOne({_id: req.params.eId, $or: [{sessionId: sessId}, {user: userId}]}, function(err, exp) {
     if (err) return req.json(err); // TODO: only send back required info
     if (exp) {
+      if (!exp.lastTranslated) { // Only may be accessed when last translated is not null
+        return res.json(404, {errors: ["Explanation may not be accessed during translation."]});
+      }
       _.extend(exp, Explanation.allowed(req.body)); // Slap on any (allowed) changes :P
       if (req.params.explain_now === "yes") {
         ex.lastTranslated = null;

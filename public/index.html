@@ -135,8 +135,8 @@
     <h4 class="text-center">
       EntoLogic helps you to understand code by automatically explaining in your spoken language.
     </h4>
-    <div class="panel panel-default explanation-panel">
-      <div class="panel-body options-panel" ng-show="!exp.user || (exp.user === u._id)">
+    <div class="panel panel-default explanation-panel" ng-show="!exp.user || (exp.user === u._id)">
+      <div class="panel-body options-panel" ng-hide="percentageDone">
         Take my code written in  
         <div class="btn-group btn-group-sm">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -161,7 +161,7 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li ng-repeat="(s, info) in spokens | orderObjectBy:'en'">
-              <a href="" ng-bind="info.en" ng-click="setSpoken(s)"></a>
+              <a href="" ng-bind="info.en" ng-click="setSpoken(info.code)"></a>
             </li>
             <li role="presentation" class="divider"></li>
             <li><a href="">Why can't I translate into...(faq)</a></li>
@@ -181,23 +181,49 @@
           </span>
         </span>
       </div>
-      <div class="panel-body options-panel" ng-hide="!exp.user || (exp.user === u._id)">
-        <button type="button" class="btn btn-default" popover-placement="bottom"
-        popover-trigger="mouseenter" popover="Create a clone which you can edit.">Fork this</button>
+      <div class="panel-body loading-panel" ng-show="percentageDone">
+        <progress percent="percentageDone" class="progress-striped active explanation-progress"></progress>
+        <div ng-show="percentageDone == 100 && !exp.lastTranslated" class="alert alert-danger">
+          <h4>Explanation error!</h4>
+          <p>
+            For some reason your explanation request did not get processed by the translator :(<br>
+            The translator may be down or just under a heavy load. Wait a bit and click retry.
+            If it still doesn't work please <a href="/#/contact">Contact Us</a>
+          </p>
+          <p>
+            <button type="button" class="btn btn-default" ng-click="pollForOutput(exp._id, exp.minExplainSeconds || 5)">Retry</button>
+          </p>
+        </div>
       </div>
     </div>
     <div class="well well-sm explanation-status" ng-show="exp._id">
       <ul class="list-inline">
         <li>
+          <b>From:</b>
+          {{modes[exp.pLang].fullName}}
+        </li>
+        <li>
+          <b>to:</b>
+          {{spokens[exp.nLang].en}}
+        </li>
+        <li>
           <b>Updated At:</b> {{exp.updatedAt | date:'medium'}}
         </li>
-        <li ng-show="exp.user && !creationUser">
+        <li ng-show="exp.user && !creationUser && exp.user !== u._id">
           <a href="" ng-click="getCreationUser()">Show user info</a>
+        </li>
+        <li ng-show="exp.user === u._id">
+          <b>User: </b>
+          <a ng-href="/#/{{u.username}}">You</a>
         </li>
         <li ng-show="creationUser">
           <b>User: </b>
           <a ng-href="/#/{{creationUser.username}}"
              ng-bind="(creationUser.realName && (creationUser.realName + '/')) + creationUser.username"></a>
+        </li>
+        <li popover-placement="bottom"
+            popover="Create a clone for yourself. (Coming Soon)" popover-trigger="mouseenter">
+          <a href="">Fork this</a>
         </li>
       </ul>
     </div>
@@ -244,10 +270,12 @@
             </ul>
           </div>
         </div>
-        <div class="well well-sm" ng-show="exp.outputTree">{{{'a': 7, b: [2,3,4]} | json}}</div>
+        <div class="well well-sm" ng-show="exp.outputTree">
+          <pre>{{exp.outputTree | json}}</pre>
+        </div>
       </div>
     </div>
-    {{exp | json}}
+    <!-- {{exp | json}} -->
   </script>
 
   <!-- LOGIN MODAL -->

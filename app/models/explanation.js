@@ -10,6 +10,7 @@ var ExplanationSchema = new Schema({
   saved: {type: Number, index: true}, // null: not saved, 1: saved publicly, 2: saved privately
   plainCodeInput: {type: String, required: true},
   translatorMessages: [{errorMessage: String}],
+  minExplainSeconds: Number,
   outputTree: String,
   lastTranslated: { type: Date, index: true },
   title: { type: String },
@@ -34,8 +35,7 @@ ExplanationSchema.plugin(timestamps, {
 });
 
 ExplanationSchema.pre('validate', function (next) {
-  if (this.isNew && this.lastTranslated !== null) { // Controller sets to null when the user doesn't do explain
-    console.log("Setting them the same");
+  if (this.isNew && this.lastTranslated !== null) { // Controller sets to null when the user doesn't want to explain now
     this.lastTranslated = this.createdAt; // To stop the translator translating it
   }
   next();
@@ -65,9 +65,22 @@ ExplanationSchema.methods.forApi = function() {
     // "translationCanceledAt",
     "lastCodeUpdate",
     "saved",
-    "title"
+    "title",
+    "minExplainSeconds"
   ]);
 };
+
+// ExplanationSchema.methods.accessAllowed = function() {
+//   var currentTimeMs = new Date().getTime();
+//   //        If translated      and     the time (ms) it was updated 
+//   return ( exp.lastTranslated ) || ( exp.updatedAt.getTime() + ((exp.minExplainSeconds || 5)*1000) < currentTimeMs )
+
+//   if (lastTranslated is null) {
+//     NOPE
+//   } else if (lastTranslated isnt null && is the same as updatedAt && ) {
+//     NOPE
+//   }
+// };
 
 ExplanationSchema.statics.allowed = function(requested, instance) {
   // Function which selects the fields which are allowed to be saved from the request object

@@ -2,7 +2,7 @@
 // GLOBALish Controllers
 // =====================
 
-such.controller("MainController", function($scope, $http, $modal, $timeout, $window, User, Session, Notifications) {
+such.controller("MainController", function($scope, $http, $modal, $timeout, $interval, User, Session, Notifications) {
   $scope.u = 0; //Loading user data
   var modalInstance;
 
@@ -101,7 +101,7 @@ such.controller("NotificationsCtrl", function($scope, $interval) {
 //    Page Controllers
 // ======================
 
-such.controller("ExplainCtrl", function($scope, $interval, $location, $routeParams, Explanation, User, Notifications) {
+such.controller("ExplainCtrl", function($scope, $interval, $timeout, $location, $routeParams, Explanation, User, Notifications) {
   // Programming language
   $scope.modes = languageMetaData.programming;
   // Spoken Language
@@ -109,6 +109,11 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
 
   // $scope.exp = {};
   // $scope.creationUser = {};
+  var explanationChecker;
+  $scope.$on("$destroy", function(){
+    $interval.cancel(explanationChecker);
+  });
+  $scope.percentageDone = 0;
 
   $scope.setupNewExp = function(s) {
     $scope.exp = new Explanation({
@@ -121,22 +126,30 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
   var providedId = $routeParams.eId;
   var persistedExp = {};
 
+  var getAndSetExp = function(expId, noErrors) {
+    // var noErrors = Boolean(failureMsg);
+    Explanation.get({eId: expId, empty: noErrors}, function(savedExp) {
+      angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
+      $scope.exp = savedExp;
+      $scope.percentageDone = 0;
+    }, function(errorResponse) {
+      if (!noErrors) { // Check if there is a failure message string because that means it's coming from the poller.
+        $scope.setupNewExp(); // (also stops removing the exp to allow retry.)
+      }
+      // $scope.exp.translatorMessages.push({msg: "Could not find explanation!", msgType: "error"});
+    });
+  };
+
   if (typeof providedId === 'string') {
     if (providedId.length === 24) {
-      Explanation.get({eId: providedId}, function(savedExp) {
-        angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
-        $scope.exp = savedExp;
-      }, function(errorResponse) {
-        $scope.setupNewExp();
-        // $scope.exp.translatorMessages.push({msg: "Could not find explanation!", msgType: "error"});
-      });
+      getAndSetExp(providedId);
     } else {
       $scope.setupNewExp();
       if (providedId !== "new") {
         Notifications.add({
           bsType: "danger",
           msg: "Invalid explanation id '" + providedId + "'",
-          timeout: 30
+          timeout: 12
         });
       }
     }
@@ -151,6 +164,10 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
   var currentSource = $scope.exp || '';
   $scope.$watch("exp", function() {
     $scope.showOutputPane = $scope.exp && (($scope.exp.translatorMessages && $scope.exp.translatorMessages.length) || $scope.exp.outputTree);
+    if ($scope.exp && $scope.exp.saved) $scope.exp.saved = $scope.exp.saved.toString();
+    if ($scope.exp && (typeof $scope.exp.outputTree === 'string')) {
+      $scope.exp.outputTree = JSON.parse($scope.exp.outputTree);
+    }
   }, true);
 
   $scope.setSpoken = function(s) {
@@ -168,6 +185,19 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
     $scope.exp.pLang = m;
   };
 
+  $scope.pollForOutput = function(expId, waitSeconds) {
+    $scope.percentageDone = 5;
+    var secondsPassed = 0;
+    explanationChecker = $interval(function() {
+      secondsPassed += 1;
+      $scope.percentageDone = (secondsPassed / waitSeconds)  * 100;
+      if (secondsPassed >= waitSeconds) {
+        getAndSetExp(expId, true);
+        $interval.cancel(explanationChecker);
+      }
+    }, 1000);
+  };
+
   $scope.explainNow = function() {
     // TODO Set readonly on codemirror
     //      Show progress bar + disable options at the top
@@ -177,12 +207,14 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
     $scope.exp.saving = true; // Show loading on save button. Will be removed by mongoose anyway.
     // $scope.exp = $scope.exp.$save();
     $scope.exp.$save({explain: "yes"}, function(savedExp) {
-      if ((providedId !== savedExp._id) && savedExp.saved) {
-        goExplanationLocaction($scope.exp._id);
-      } else {
-        angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
-        $scope.exp = savedExp;
-      }
+      // if ((providedId !== savedExp._id) && savedExp.saved) {
+        // goExplanationLocaction($scope.exp._id);
+        // $scope.exp = savedExp;
+      // } else {
+      angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
+      $scope.exp = savedExp;
+      $scope.pollForOutput(savedExp._id, (savedExp.minExplainSeconds || 5) + 1);
+      // }
     }, function(errorResponse) {
       $scope.exp.saving = undefined;
       // Notification errors should be enough

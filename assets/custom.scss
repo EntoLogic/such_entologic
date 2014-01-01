@@ -146,6 +146,14 @@ body
 		line-height: 1.0;
 	}
 }
+.loading-panel
+{
+	padding-bottom: 0;
+	.explanation-progress
+	{
+		// margin-bottom: 0;
+	}
+}
 
 // Code Mirror stuff
 .CodeMirror {

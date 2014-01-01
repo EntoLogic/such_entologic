@@ -3,6 +3,7 @@
  */
 var express = require('express'),
     config = require('./config'),
+    misc = require("./middlewares/misc")
     RedisStore = require('connect-redis')(express);
 
 module.exports = function(app, passport, db) {
@@ -54,7 +55,6 @@ module.exports = function(app, passport, db) {
 
     //routes should be at the last
     app.use(app.router);
-
     //TODO add 404, 500 here
   });
 };
