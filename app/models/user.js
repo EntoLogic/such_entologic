@@ -37,12 +37,9 @@ var UserSchema = new Schema({
 });
 
 var apiSafeFields = {
-  me: "_id email username realName provider",
-  randomUser: "_id username realName"
+  me: ["_id", "email", "username", "realName", "provider"],
+  randomUser: ["_id", "username", "realName"]
 };
-_.each(apiSafeFields, function(value, key, obj) {
-  apiSafeFields[key + "Array"] = value.split(" ");
-});
 var bannedUsernames = ['me'];
 var bannedEmails = ['example@example.com'];
 
@@ -79,8 +76,10 @@ UserSchema.path('email').validate(function(email) {
 UserSchema.path('username').validate(function(username) {
   // if you are authenticating by any of the oauth strategies, don't validate
   if (authTypes.indexOf(this.provider) !== -1) return true;
-  return username && username.length;
-}, 'Username cannot be blank');
+  if (typeof username !== "string") return false;
+  if (!val.check(username).len(2, 20)) return false;
+  return true;
+}, 'Username must be 2 to 20 characters long');
 
 // UserSchema.path('passwordHash').validate(function(passwordHash) {
 //   // if you are authenticating by any of the oauth strategies, don't validate
@@ -180,17 +179,13 @@ UserSchema.methods = {
     return bcrypt.compareSync(candidatePassword, this.passwordHash);
   },
   cleanForApi: function() {
-    return _.pick(this, apiSafeFields.randomUserArray);
+    return _.pick(this, apiSafeFields.randomUser);
     // return this.select(apiSafeFields);
   },
   cleanForOwnUser: function() {
-    return _.pick(this, apiSafeFields.meArray);
+    return _.pick(this, apiSafeFields.me);
   }
 };
-
-UserSchema.static('findForApi', function (q, callback) {
-  this.findOne(q, apiSafeFields.randomUser, callback);
-});
 
 UserSchema.plugin(timestamps, {
   createdAt: { index: true },

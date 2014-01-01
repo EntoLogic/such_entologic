@@ -25,7 +25,7 @@ module.exports = function(app, passport, auth) {
   app.post('/u/out', users.signout);
 
   app.get('/u/me', auth.requiresLogin200, users.me);
-  app.get('/u/:username', users.show);
+  app.get('/u/:userquery', users.show); // userquery is either a username or user object id
 
   // //Setting the facebook oauth routes
   // app.get('/auth/facebook', passport.authenticate('facebook', {

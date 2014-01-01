@@ -126,10 +126,25 @@ body
 		margin: 0;
 	}
 }
-
-.options-panel
+.explanation-panel
 {
-	padding: 8px;
+	margin-bottom: 3px;
+	.options-panel
+	{
+		padding: 8px;
+	}
+}
+.explanation-status
+{
+	margin-bottom: 3px;
+	font-size: 11px;
+	padding: 4px;
+	.list-inline
+	{
+		text-align: center;
+		margin-bottom: 0;
+		line-height: 1.0;
+	}
 }
 
 // Code Mirror stuff

@@ -44,11 +44,21 @@ exports.create = function(req, res) {
  *  Show profile
  */
 exports.show = function(req, res) {
-  User.findForApi({username: req.params.username}, function(err, user) {
+  var uq = req.params.userquery;
+  var uqLen = uq.length;
+  var query;
+  if (uqLen <= 20 && uqLen >= 2) {
+    query = User.findOne({username: uq});
+  } else if (uqLen === 24) {
+    query = User.findOne({_id: uq});
+  } else {
+    return res.json({errors: "Invalide user query"});
+  }
+  query.exec(function(err, user) {
     if (err) return next(err);
     // if (!user) return next(new Error('Failed to load User ' + username));
     if (user) {
-      res.json(user);
+      res.json(user.cleanForApi());
     } else {
       res.json({errors: ["Could not find user '" + username + "'"]});
     }

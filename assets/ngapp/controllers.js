@@ -37,8 +37,7 @@ such.controller("MainController", function($scope, $http, $modal, $timeout, $win
   };
 
   $scope.getUserDetails = function(cb) {
-    var userResource = User.me();
-    userResource.$promise.then(function(user) {
+    var userResource = User.me(function(user) {
       $scope.u = user;
       if (cb) cb();
     }, function(err) {
@@ -82,9 +81,6 @@ such.controller("MainController", function($scope, $http, $modal, $timeout, $win
   $scope.getUserDetails();
 });
 
-such.controller("UserCornerController", function($scope) {
-});
-
 such.controller("LoginCtrl", function($scope, $modalInstance, Session, triedAction) {
   $scope.loginForm = {};
   if (triedAction) {
@@ -105,11 +101,14 @@ such.controller("NotificationsCtrl", function($scope, $interval) {
 //    Page Controllers
 // ======================
 
-such.controller("ExplainCtrl", function($scope, $interval, $location, $routeParams, Explanation, Notifications) {
+such.controller("ExplainCtrl", function($scope, $interval, $location, $routeParams, Explanation, User, Notifications) {
   // Programming language
   $scope.modes = languageMetaData.programming;
   // Spoken Language
   $scope.spokens = languageMetaData.spoken;
+
+  // $scope.exp = {};
+  // $scope.creationUser = {};
 
   $scope.setupNewExp = function(s) {
     $scope.exp = new Explanation({
@@ -208,6 +207,12 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
 
   var goExplanationLocaction = function(id) {
     $location.path("/exp/" + id);
+  };
+
+  $scope.getCreationUser = function() {
+    if ($scope.exp.user) {
+      $scope.creationUser = User.get({userId: $scope.exp.user});
+    }
   };
 });
 

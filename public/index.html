@@ -57,7 +57,7 @@
         </div>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="button-group-navbar" ng-controller="UserCornerController">
+        <li class="button-group-navbar">
           <div class="btn-group navbar-btn" ng-hide="u">
             <button type="button" class="btn btn-default"
                     ng-bind="u === 0 ? 'Loading...' : 'Login/Signup'"
@@ -135,7 +135,7 @@
     <h4 class="text-center">
       EntoLogic helps you to understand code by automatically explaining in your spoken language.
     </h4>
-    <div class="panel panel-default">
+    <div class="panel panel-default explanation-panel">
       <div class="panel-body options-panel" ng-show="!exp.user || (exp.user === u._id)">
         Take my code written in  
         <div class="btn-group btn-group-sm">
@@ -185,6 +185,21 @@
         <button type="button" class="btn btn-default" popover-placement="bottom"
         popover-trigger="mouseenter" popover="Create a clone which you can edit.">Fork this</button>
       </div>
+    </div>
+    <div class="well well-sm explanation-status" ng-show="exp._id">
+      <ul class="list-inline">
+        <li>
+          <b>Updated At:</b> {{exp.updatedAt | date:'medium'}}
+        </li>
+        <li ng-show="exp.user && !creationUser">
+          <a href="" ng-click="getCreationUser()">Show user info</a>
+        </li>
+        <li ng-show="creationUser">
+          <b>User: </b>
+          <a ng-href="/#/{{creationUser.username}}"
+             ng-bind="(creationUser.realName && (creationUser.realName + '/')) + creationUser.username"></a>
+        </li>
+      </ul>
     </div>
     <p class="text-info" ng-hide="exp">Loading Explanation...</p>
     <div class="row">

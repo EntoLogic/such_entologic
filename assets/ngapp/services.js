@@ -1,8 +1,7 @@
 such.factory("User", function($resource) {
-  return $resource('/u/:username', {
-    username: '@username'
-  }, {
-    me: {method: 'GET', params: {username: 'me'}, isArray: false}
+  return $resource('/u/:userId', { userId: '@_id' }, {
+    me: {method: 'GET', params: {userId: 'me'}, isArray: false},
+    byUsername: {method: 'GET', params: {userId: 'username1'}, isArray: false}
   });
 });
 
