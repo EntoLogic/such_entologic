@@ -62,8 +62,8 @@ exports.update = function(req, res) {
         return res.json(404, {errors: ["Explanation may not be accessed during translation."]});
       }
       _.extend(exp, Explanation.allowed(req.body)); // Slap on any (allowed) changes :P
-      if (req.params.explain_now === "yes") {
-        ex.lastTranslated = null;
+      if (req.query.explain === "yes") {
+        exp.lastTranslated = null;
       }
       exp.save(function(err, updatedExp) {
         if (err) return res.json(400, err);
