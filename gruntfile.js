@@ -11,7 +11,8 @@ module.exports = function(grunt) {
         },
       },
       html: {
-        files: ['public/views/**', 'public/index.html'],
+        files: ['public/views/**', 'assets/index.html'],
+        tasks: ['htmlmin'],
         options: {
           livereload: true,
         },
@@ -77,6 +78,17 @@ module.exports = function(grunt) {
         }
       }
     },
+    htmlmin: {
+      dist: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {                                   
+          'public/index.html': 'assets/index.html' // 'destination': 'source'
+        }
+      }
+    },
     nodemon: {
       dev: {
         options: {
@@ -111,10 +123,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-sloc');
+  grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
   //Making grunt default to force in order not to break the project.
   grunt.option('force', true);
 
   //Default task(s).
-  grunt.registerTask('default', ['jshint', 'uglify', 'sass', 'cssmin', 'sloc', 'concurrent']);
+  grunt.registerTask('default', ['jshint', 'uglify', 'sass', 'cssmin', 'htmlmin', 'sloc', 'concurrent']);
 };
