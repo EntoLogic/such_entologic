@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 
 var ExplanationSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
+  sessionId: { type: String },
   saved: {type: Number, index: true}, // null: not saved, 1: saved publicly, 2: saved privately
   plainCodeInput: {type: String, required: true},
   translatorMessages: [{errorMessage: String}],

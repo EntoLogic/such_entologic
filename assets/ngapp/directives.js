@@ -12,8 +12,11 @@ such.directive("mustBeUser", function() {
 		restrict: 'A',
 		link: function(scope, element, attrs) {
 			element.bind('click', function() {
-				if (scope.u) return;
-				scope.openLoginModal(attrs.mustBeUser);
+				if (scope.u) {
+					scope.$eval(attrs.userCan);  // calls action() on the scope
+				} else {
+					scope.openLoginModal(attrs.mustBeUser);
+				}
 			});
 		}
 	};

@@ -65,6 +65,7 @@ such.controller("MainController", function($scope, $http, $modal, $timeout, $win
   $scope.signout = function() {
     Session.signout().success(function(res) {
       $scope.u = null;
+      // Todo: go somewhere
     }).error(function(res) {
       Notifications.add({
         bsType: "danger",
@@ -110,7 +111,6 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
   // Spoken Language
   $scope.spokens = languageMetaData.spoken;
 
-  var providedId = $routeParams.eId;
   $scope.setupNewExp = function(s) {
     $scope.exp = new Explanation({
       plainCodeInput: s || "# Type code here",
@@ -119,7 +119,7 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
       translatorMessages: []
     });
   };
-
+  var providedId = $routeParams.eId;
   var persistedExp = {};
 
   if (typeof providedId === 'string') {
@@ -178,8 +178,12 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
     $scope.exp.saving = true; // Show loading on save button. Will be removed by mongoose anyway.
     // $scope.exp = $scope.exp.$save();
     $scope.exp.$save({explain: "yes"}, function(savedExp) {
-      angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
-      $scope.exp = savedExp;
+      if ((providedId !== savedExp._id) && savedExp.saved) {
+        goExplanationLocaction($scope.exp._id);
+      } else {
+        angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
+        $scope.exp = savedExp;
+      }
     }, function(errorResponse) {
       $scope.exp.saving = undefined;
       // Notification errors should be enough
@@ -190,12 +194,20 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
     $scope.exp.saving = true; // Show loading on save button. Will be removed by mongoose anyway.
     $scope.exp.saved = $scope.exp.saved || 1; // Set to public unless already specified
     $scope.exp.$save(function(savedExp) {
-      angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
-      $scope.exp = savedExp;
+      if ((providedId !== savedExp._id) && savedExp.saved) {
+        goExplanationLocaction($scope.exp._id);
+      } else {
+        angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
+        $scope.exp = savedExp;
+      }
     }, function(errorResponse) {
       $scope.exp.saving = undefined;
       // Notification errors should be enough
     });
+  };
+
+  var goExplanationLocaction = function(id) {
+    $location.path("/exp/" + id);
   };
 });
 
