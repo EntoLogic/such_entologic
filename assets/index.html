@@ -135,6 +135,7 @@
   <script type="text/ng-template" id="explain.html">
     <p class="text-center lead">
       EntoLogic helps you to understand code by automatically explaining in your spoken language.
+      <a href="/#/about#how">How?</a>
     </p>
     <div class="panel panel-default explanation-panel" ng-show="!exp.user || (exp.user === u._id)">
       <div class="panel-body options-panel" ng-hide="percentageDone">
@@ -265,11 +266,11 @@
             <ul class="list-group translator-message-list">
               <li class="list-group-item" ng-repeat="m in exp.translatorMessages | attrEq:'msgType':'error'">
                 <span class="label label-danger pull-right">Error</span>
-                <span ng-bind="m.msg"></span>
+                <span ng-bind="m.msg || 'Unknown Error :('"></span>
               </li>
               <li class="list-group-item" ng-repeat="m in exp.translatorMessages | attrEq:'msgType':'warning'">
                 <span class="label label-warning pull-right">Warning</span>
-                <span ng-bind="m.msg"></span>
+                <span ng-bind="m.msg || 'Unknown Warning :('"></span>
               </li>
             </ul>
           </div>

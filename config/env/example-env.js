@@ -1,6 +1,5 @@
 module.exports = {
   db: "mongodb://localhost/entologic_dev",
-  // db: "mongodb://webApp:J4bH7u88I8ksIj0h1Hd6Hqbf@s10.entologic.net:5764/entologic_dev",
   sessionsSecret: "wowsoentologic",
   disableXsrfProtection: true, 
   redis: {
@@ -10,7 +9,7 @@ module.exports = {
     // password: "foobarwow"
   },
   app: {
-    name: "EntoLogic - Development"
+    name: "EntoLogic - Environment"
   },
   twitter: {
     clientID: "CONSUMER_KEY",
