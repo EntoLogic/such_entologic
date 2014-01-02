@@ -209,7 +209,7 @@
           <b>Updated At:</b> {{exp.updatedAt | date:'medium'}}
         </li>
         <li ng-show="exp.saved">
-          <b>Saved</b> ({{exp.saved == 1 ? 'Private' : 'Public'}})
+          <b>Saved</b> ({{exp.saved == 2 ? 'Private' : 'Public'}})
         </li>
         <li ng-show="exp.user && !creationUser && exp.user !== u._id">
           <a href="" ng-click="getCreationUser()">Show user info</a>

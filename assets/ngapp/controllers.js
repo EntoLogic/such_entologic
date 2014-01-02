@@ -289,8 +289,9 @@ such.controller('EditorCtrl', function($scope, $timeout) {
         _cm.setOption("mode", 'text/x-' + newVal);
       });
       $scope.$watch("exp.user", function(newVal, oldVal) {
-        var readOnly = Boolean(!$scope.exp && !$scope.exp.user && ($scope.exp.user !== $scope.u._id));
-        _cm.setOption("readOnly", readOnly);
+        // editable if: there is an exp and it's annonymous  OR the exp has a user and that user is you.
+        var editable = Boolean($scope.exp && (!$scope.exp.user || ($scope.u && $scope.exp.user === $scope.u._id)));
+        _cm.setOption("readOnly", !editable);
       });
       $scope.themeChanged = function() {
         _cm.setOption("theme", $scope.currentTheme);
