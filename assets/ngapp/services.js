@@ -114,10 +114,24 @@ such.factory("Notifications", function($interval, $window) {
 });
 
 such.factory("mainInterceptor", function($q, Notifications) {
+  var explanationFields = ["pLang", "nLang", "plainCodeInput", "saved", "title"];
+  var filterExplanation = function(origRequestObj) {
+    // var origRequestObj = origRequestObj;
+    angular.forEach(origRequestObj, function(value, key){
+      if (key[0] !== "$" && explanationFields.indexOf(key) === -1) {
+        console.log(key, value);
+        origRequestObj[key] = undefined;
+      }
+    });
+  };
   return {
-    // request: function(config) {
-    //   return config;
-    // },
+    request: function(config) {
+      if (config.url.slice(0, 2) === "/e" && config.method === "POST") {
+        filterExplanation(config.data);
+      }
+      console.log(config);
+      return config;
+    },
  
     // requestError: function(rejection) {
     //   return $q.reject(rejection);

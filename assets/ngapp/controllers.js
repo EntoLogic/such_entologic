@@ -2,7 +2,7 @@
 // GLOBALish Controllers
 // =====================
 
-such.controller("MainController", function($scope, $window, $location, $modal, $timeout, User, Session, Notifications) {
+such.controller("MainController", function($scope, $window, $location, $route, $modal, $timeout, User, Session, Notifications) {
   // If mobile and going to root, redirect to about
   $timeout(function() {
     if ($window.innerWidth < 768 && $location.path() == "/") {
@@ -58,6 +58,7 @@ such.controller("MainController", function($scope, $window, $location, $modal, $
         if(modalInstance) {
           modalInstance.close();
           modalInstance = null;
+          $route.reload();
         }
       });
     }).error(function(resErr) {
