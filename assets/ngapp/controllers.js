@@ -205,18 +205,9 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
   };
 
   $scope.explainNow = function() {
-    // TODO Set readonly on codemirror
-    //      Show progress bar + disable options at the top
-
-    // $scope.exp.lastTranslated = null; // Make sure that the translator is to translate it. CAN'T do this anymore
     $scope.exp.saved = undefined; // Set saved to undefined as explaining should not change it
     $scope.exp.saving = true; // Show loading on save button. Will be removed by mongoose anyway.
-    // $scope.exp = $scope.exp.$save();
     $scope.exp.$save({explain: "yes"}, function(savedExp) {
-      // if ((providedId !== savedExp._id) && savedExp.saved) {
-        // goExplanationLocaction($scope.exp._id);
-        // $scope.exp = savedExp;
-      // } else {
       angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
       $scope.exp = savedExp;
       $scope.pollForOutput(savedExp._id, (savedExp.minExplainSeconds || 5) + 1);
@@ -282,6 +273,7 @@ such.controller('EditorCtrl', function($scope, $timeout) {
   // The ui-codemirror option
   $scope.editorOptions = {
     theme: $scope.currentTheme,
+    readOnly: true, // Start with read only, changes later below
     lineNumbers: true,
     indentUnit: 2,
     tabMode: "indent",
@@ -295,6 +287,10 @@ such.controller('EditorCtrl', function($scope, $timeout) {
     onLoad: function(_cm){
       $scope.$watch("exp.pLang", function(newVal, oldVal) {
         _cm.setOption("mode", 'text/x-' + newVal);
+      });
+      $scope.$watch("exp.user", function(newVal, oldVal) {
+        var readOnly = Boolean(!$scope.exp && !$scope.exp.user && ($scope.exp.user !== $scope.u._id));
+        _cm.setOption("readOnly", readOnly);
       });
       $scope.themeChanged = function() {
         _cm.setOption("theme", $scope.currentTheme);

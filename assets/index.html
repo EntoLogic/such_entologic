@@ -124,12 +124,11 @@
   </span>
 
 
-<!-- 
-  =========
-    LOCAL
-  TEMPLATES
-  =========
- -->
+  <!--=========
+        LOCAL
+      TEMPLATES
+      ========= --> 
+
   <!-- HOME/Explain -->
   <script type="text/ng-template" id="explain.html">
     <p class="text-center lead">
@@ -209,6 +208,9 @@
         <li>
           <b>Updated At:</b> {{exp.updatedAt | date:'medium'}}
         </li>
+        <li ng-show="exp.saved">
+          <b>Saved</b> ({{exp.saved == 1 ? 'Private' : 'Public'}})
+        </li>
         <li ng-show="exp.user && !creationUser && exp.user !== u._id">
           <a href="" ng-click="getCreationUser()">Show user info</a>
         </li>
@@ -227,7 +229,7 @@
         </li>
       </ul>
     </div>
-    <p class="text-info" ng-hide="exp">Loading Explanation...</p>
+    <p class="text-info text-center" ng-hide="exp">Loading Explanation...</p>
     <div class="row">
       <div ng-class="{'col-md-6 col-sm-6': showOutputPane, 'col-sm-12 col-md-12': !showOutputPane}">
         <section ng-controller="EditorCtrl">
