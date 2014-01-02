@@ -124,7 +124,7 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
 
   $scope.setupNewExp = function(s) {
     $scope.exp = new Explanation({
-      plainCodeInput: s || "# Type code here",
+      plainCodeInput: s || "# New explanation - type code here",
       pLang: "ruby",
       nLang: "en",
       translatorMessages: []
@@ -289,7 +289,7 @@ such.controller('EditorCtrl', function($scope, $timeout) {
       $scope.$watch("exp.pLang", function(newVal, oldVal) {
         _cm.setOption("mode", 'text/x-' + newVal);
       });
-      $scope.$watch("exp.user", function(newVal, oldVal) {
+      $scope.$watch("exp", function(newVal, oldVal) {
         // editable if: there is an exp and it's annonymous  OR the exp has a user and that user is you.
         var editable = Boolean($scope.exp && (!$scope.exp.user || ($scope.u && $scope.exp.user === $scope.u._id)));
         _cm.setOption("readOnly", !editable);

@@ -119,7 +119,6 @@ such.factory("mainInterceptor", function($q, Notifications) {
     // var origRequestObj = origRequestObj;
     angular.forEach(origRequestObj, function(value, key){
       if (key[0] !== "$" && explanationFields.indexOf(key) === -1) {
-        console.log(key, value);
         origRequestObj[key] = undefined;
       }
     });
@@ -129,7 +128,6 @@ such.factory("mainInterceptor", function($q, Notifications) {
       if (config.url.slice(0, 2) === "/e" && config.method === "POST") {
         filterExplanation(config.data);
       }
-      console.log(config);
       return config;
     },
  
@@ -176,7 +174,6 @@ such.filter('attrEq', function() {
 
 such.filter('truncate', function () {
   return function (text, length, end) {
-    console.log(text, length, end);
     if (isNaN(length)) length = 10;
     if (end === undefined) end = "...";
     if (text.length <= length || text.length - end.length <= length) {
