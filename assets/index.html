@@ -67,7 +67,7 @@
                     popover="Save your explanations and contribute translations!"></button>
           </div>
           <div class="btn-group navbar-btn" ng-show="u">
-          	<button type="button" class="btn btn-default" ng-bind="u.username"></button>
+          	<a type="button" class="btn btn-default" ng-bind="u.username" href="/#/u/{{u.username}}"></a>
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
               <span class="caret"></span>
             </button>
@@ -219,11 +219,11 @@
         </li>
         <li ng-show="exp.user === u._id">
           <b>User: </b>
-          <a ng-href="/#/{{u.username}}">You</a>
+          <a ng-href="/#/u/{{u.username}}">You</a>
         </li>
         <li ng-show="creationUser">
           <b>User: </b>
-          <a ng-href="/#/{{creationUser.username}}"
+          <a ng-href="/#/u/{{creationUser.username}}"
              ng-bind="(creationUser.realName && (creationUser.realName + '/')) + creationUser.username"></a>
         </li>
         <li popover-placement="bottom"

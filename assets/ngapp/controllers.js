@@ -14,6 +14,11 @@ such.controller("MainController", function($scope, $window, $location, $route, $
   var modalInstance;
 
   $scope.navCollapsed = true;
+  
+  // Programming language
+  $scope.modes = languageMetaData.programming;
+  // Spoken Language
+  $scope.spokens = languageMetaData.spoken;
 
   $scope.notifications = [];
   Notifications.setNotificationArray($scope.notifications);
@@ -118,11 +123,6 @@ such.controller("LoginCtrl", function($scope, $modalInstance, Session, triedActi
 // ======================
 
 such.controller("ExplainCtrl", function($scope, $interval, $location, $routeParams, Explanation, User, Notifications) {
-  // Programming language
-  $scope.modes = languageMetaData.programming;
-  // Spoken Language
-  $scope.spokens = languageMetaData.spoken;
-
   // $scope.exp = {};
   // $scope.creationUser = {};
   var explanationChecker;

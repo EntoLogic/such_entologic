@@ -89,7 +89,7 @@ exports.list = function(req, res) {
   var query = Explanation.find();
   if (providedUserId) {
     query = query.where('user').equals(providedUserId);
-    if (providedUserId === currentUserId) {
+    if (currentUserId && (providedUserId === currentUserId.toString())) {
       query = query.where('saved').in([1,2]); //Show the current user their private and public ones
     } else {
       query = query.where('saved').equals(1);
@@ -97,7 +97,7 @@ exports.list = function(req, res) {
   } else {
     query = query.where('saved').equals(1);
   }
-  query.select('user nLang pLang title plainCodeInput saved').exec(function(err, list){
+  query.select('user nLang pLang title plainCodeInput saved updatedAt').exec(function(err, list){
     if (err) return res.json(500, {errors: ["Error finding explanations"]});
     res.json(200, list);
   });
