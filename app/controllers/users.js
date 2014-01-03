@@ -1,5 +1,13 @@
 var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    _ = require("underscore");
+
+var valErrors = function(valErrorsObj) {
+  return _.reduce(valErrorsObj.errors, function(memo, val, key, obj) {
+    memo.push(key + " " + val.message);
+    return memo;
+  }, []);
+};
 
 /**
  * Auth callback
@@ -34,7 +42,7 @@ exports.create = function(req, res) {
   user.save(function(err, savedUser) {
     if (err) {
       //Send back only necessary errors
-      return res.json({errors: err});
+      return res.json(400, {errors: valErrors(err)});
     }
     return res.json(savedUser.cleanForApi());
   });

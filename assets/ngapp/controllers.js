@@ -25,6 +25,10 @@ such.controller("MainController", function($scope, $window, $location, $route, $
   });
 
   $scope.$on('$locationChangeSuccess', function (event, newLoc, oldLoc){
+    if (modalInstance) {
+      modalInstance.close();
+      modalInstance = null;
+    }
     Notifications.pageChange();
     $timeout.cancel(changePageTimeout);
     changePageTimeout = $timeout(function() {
@@ -88,6 +92,16 @@ such.controller("MainController", function($scope, $window, $location, $route, $
   $scope.getUserDetails();
 });
 
+such.controller("NotificationsCtrl", function($scope) {
+  $scope.closeAlert = function(index) {
+    $scope.notifications.splice(index, 1);
+  };
+});
+
+// =======================
+//    Modal Controllers
+// =======================
+
 such.controller("LoginCtrl", function($scope, $modalInstance, Session, triedAction) {
   $scope.loginForm = {};
   if (triedAction) {
@@ -98,11 +112,6 @@ such.controller("LoginCtrl", function($scope, $modalInstance, Session, triedActi
   };
 });
 
-such.controller("NotificationsCtrl", function($scope) {
-  $scope.closeAlert = function(index) {
-    $scope.notifications.splice(index, 1);
-  };
-});
 
 // ======================
 //    Page Controllers
@@ -317,5 +326,38 @@ such.controller("NotFoundCtrl", function($scope, Notifications) {
   });
 });
 
+such.controller("RegisterCtrl", function($scope, $location, User, Notifications) {
+  if ($scope.u) {
+    $location.path("/");
+    Notifications.add({
+      bsType: "warning",
+      msg: "You are already signed in!",
+      timeout: 14,
+      keepOnPageChange: true
+    });
+    return;
+  }
 
+  $scope.newUser = new User();
 
+  $scope.registerUser = function() {
+    if ($scope.registerform.$invalid) {
+      Notifications.add({
+        bsType: "danger",
+        msg: "Form Invalid",
+        timeout: 9
+      });
+      return;
+    }
+    $scope.newUser.$save(function() {
+      $location.path("/");
+      Notifications.add({
+        bsType: "info",
+        msg: "You may now sign in!",
+        timeout: 9
+      });
+    }, function() {
+      // Response interceptor shows errors
+    });
+  };
+});

@@ -19,11 +19,13 @@ Validator.prototype.error = function(msg) { return false; };
 var UserSchema = new Schema({
   email: {
     type: String,
-    unique: true
+    unique: true,
+    required: 'is required!'
   },
   username: {
     type: String,
-    unique: true
+    unique: true,
+    required: 'is required!'
   },
   realName: String,
   provider: String,
@@ -67,30 +69,41 @@ var validatePresenceOf = function(value) {
 //   return name.length;
 // }, 'Name cannot be blank');
 
+// UserSchema.path('email').validate(function(email) {
+//   // if you are authenticating by any of the oauth strategies, don't validate
+//   if (authTypes.indexOf(this.provider) !== -1) return true;
+//   return email && email.length;
+// }, 'Email cannot be blank');
+
 UserSchema.path('email').validate(function(email) {
   // if you are authenticating by any of the oauth strategies, don't validate
   if (authTypes.indexOf(this.provider) !== -1) return true;
-  return email && email.length;
-}, 'Email cannot be blank');
+  return val.check(email).isEmail();
+}, 'Email must be valid');
 
 UserSchema.path('username').validate(function(username) {
   // if you are authenticating by any of the oauth strategies, don't validate
   if (authTypes.indexOf(this.provider) !== -1) return true;
   if (typeof username !== "string") return false;
-  if (!val.check(username).len(2, 20)) return false;
-  return true;
+  return val.check(username).len(2, 20);
 }, 'Username must be 2 to 20 characters long');
 
-// UserSchema.path('passwordHash').validate(function(passwordHash) {
-//   // if you are authenticating by any of the oauth strategies, don't validate
-//   if (authTypes.indexOf(this.provider) !== -1) return true;
-//   if (!val.check(this.password).len(6, 100)) {
-//     this.invalidate('password', 'must be between 6 and 100 characters.');
-//   }
+UserSchema.path('passwordHash').validate(function(passwordHash) {
+  // if you are authenticating by any of the oauth strategies, don't validate
+  if (authTypes.indexOf(this.provider) !== -1) return true;
+  if (!val.check(this.password).len(6, 100)) {
+    this.invalidate('password', 'must be between 6 and 100 characters.');
+  }
+  return true;
+}, 'Password error');
 
-//   console.log("WOOP");
-//   return true;
-// }, 'Password cannot be blank');
+UserSchema.path("email").validate(function(email) {
+  return bannedEmails.indexOf(email) == -1;
+}, "may not be used");
+
+UserSchema.path("username").validate(function(username) {
+  return bannedEmails.indexOf(username) == -1;
+}, "may not be used");
 
 
 /**
@@ -111,6 +124,7 @@ UserSchema.pre('validate', function(next) {
   async.parallel([
     function(callback) {
       // Manual uniquness checks
+      if (!user.email && !user.username) return callback();
       mongoose.models.User.findOne({$or: [
                                           {email: user.email},
                                           {username: user.username}
@@ -120,11 +134,12 @@ UserSchema.pre('validate', function(next) {
         if(err) {
           callback(err);
         } else if(userObj) {
+          console.log(userObj.email, user.email);
           if (userObj.email === user.email) {
-            user.invalidate("email", "must be unique");
+            user.invalidate("email", "already in use");
           }
           if (userObj.username === user.username) {
-            user.invalidate("username", "must be unique");
+            user.invalidate("username", "already in use");
           }
           callback();
         } else {
@@ -151,17 +166,8 @@ UserSchema.pre('validate', function(next) {
       });
     },
     function(callback) {
-      if (!val.check(user.password).len(6, 100)) {
-        user.invalidate('password', 'must be between 6 and 100 characters.');
-      }
-      callback();
-    },
-    function(callback) {
-      if (user.email in bannedEmails) {
-        user.invalidate('email', 'may not be used.');
-      }
-      if (user.username in bannedUsernames) {
-        user.invalidate('username', 'may not be used.');
+      if (!user.password) {
+        user.invalidate('password', 'is required!');
       }
       callback();
     }
