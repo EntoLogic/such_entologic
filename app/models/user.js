@@ -180,17 +180,27 @@ UserSchema.pre('validate', function(next) {
 /**
  * Methods
  */
-UserSchema.methods = {
-  authenticate: function(candidatePassword, cb) {
-    return bcrypt.compareSync(candidatePassword, this.passwordHash);
-  },
-  cleanForApi: function() {
-    return _.pick(this, apiSafeFields.randomUser);
-    // return this.select(apiSafeFields);
-  },
-  cleanForOwnUser: function() {
-    return _.pick(this, apiSafeFields.me);
-  }
+UserSchema.methods.authenticate = function(candidatePassword, cb) {
+  return bcrypt.compareSync(candidatePassword, this.passwordHash);
+};
+UserSchema.methods.cleanForApi = function() {
+  return _.pick(this, apiSafeFields.randomUser);
+  // return this.select(apiSafeFields);
+};
+UserSchema.methods.cleanForOwnUser = function() {
+  return _.pick(this, apiSafeFields.me);
+};
+
+
+UserSchema.statics.allowed = function(requested, instance) {
+  // Function which selects the fields which are allowed to be saved from the request object
+  var picked = _.pick(requested, [
+    "email",
+    "username",
+    "password",
+    "realName"
+  ]);
+  return picked;
 };
 
 UserSchema.plugin(timestamps, {

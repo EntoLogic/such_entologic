@@ -354,7 +354,8 @@ such.controller("RegisterCtrl", function($scope, $location, User, Notifications)
       Notifications.add({
         bsType: "info",
         msg: "You may now sign in!",
-        timeout: 9
+        timeout: 9,
+        keepOnPageChange: true
       });
     }, function() {
       // Response interceptor shows errors

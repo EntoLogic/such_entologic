@@ -1,0 +1,22 @@
+<h2>Register</h2>
+<form role="form" name="registerform" ng-submit="registerUser()">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" id="email" placeholder="person@example.com" ng-model="newUser.email" required>
+  </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" ng-minlength="2" ng-maxlength="20"
+           placeholder="flotus1" ng-model="newUser.username" required>
+  </div>
+  <div class="form-group">
+    <label for="username">Full Name <small>(optional)</small></label>
+    <input type="text" class="form-control" id="realName"
+           placeholder="Ento Logic" ng-model="newUser.realName">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" placeholder="password" ng-model="newUser.password" required>
+  </div>
+  <button type="submit" class="btn btn-default">Register</button>
+</form>
