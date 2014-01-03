@@ -180,3 +180,11 @@ body
 {
 	margin-bottom: 0;
 }
+input.ng-invalid.ng-dirty
+{
+	border: 1px solid #ff0000;
+}
+.alert.form-error
+{
+	padding: 3px;
+}

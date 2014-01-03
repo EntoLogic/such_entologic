@@ -1,22 +1,41 @@
 <h2>Register</h2>
-<form role="form" name="registerform" ng-submit="registerUser()">
+<ul>
+  <li ng-repeat="e in registerform.$errors">{{e}}</li>
+</ul>
+<form name="registerform" ng-submit="registerUser()">
   <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" class="form-control" id="email" placeholder="person@example.com" ng-model="newUser.email" required>
+    <label for="email">
+      Email
+      <span class="text-danger" ng-show="registerform.email.$invalid && registerform.email.$dirty">
+        - Must be present and valid!
+      </span>
+    </label>
+    <input type="email" class="form-control" name="email" placeholder="person@example.com" ng-model="newUser.email" required>
   </div>
   <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" ng-minlength="2" ng-maxlength="20"
+    <label for="username">
+      Username
+      <span class="text-danger" ng-show="registerform.username.$invalid && registerform.username.$dirty">
+        - Must be 2 to 20 characters long!
+      </span>
+    </label>
+    <input type="text" class="form-control" name="username" ng-minlength="2" ng-maxlength="20"
            placeholder="flotus1" ng-model="newUser.username" required>
   </div>
   <div class="form-group">
     <label for="username">Full Name <small>(optional)</small></label>
-    <input type="text" class="form-control" id="realName"
+    <input type="text" class="form-control" name="realName"
            placeholder="Ento Logic" ng-model="newUser.realName">
   </div>
   <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" placeholder="password" ng-model="newUser.password" required>
+    <label for="password">
+      Password
+      <span class="text-danger" ng-show="registerform.password.$invalid && registerform.password.$dirty">
+        - Must be 6 to 100 characters long!
+      </span>
+    </label>
+    <input type="password" class="form-control" name="password" placeholder="password" ng-model="newUser.password" required
+    ng-minlength="6" ng-maxlength="100">
   </div>
   <button type="submit" class="btn btn-default">Register</button>
 </form>

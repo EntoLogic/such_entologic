@@ -19,6 +19,9 @@ such.config(function($routeProvider, $locationProvider) {
   }).when('/register', {
     templateUrl: 'views/create_account.html',
     controller: 'RegisterCtrl'
+  }).when('/u/:username', {
+    templateUrl: 'views/user_profile.html',
+    controller: 'ShowUserCtrl'
   }).otherwise({
     controller: 'NotFoundCtrl',
     templateUrl: 'notFound.html'

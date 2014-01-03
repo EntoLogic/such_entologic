@@ -60,7 +60,7 @@ exports.show = function(req, res) {
   } else if (uqLen === 24) {
     query = User.findOne({_id: uq});
   } else {
-    return res.json({errors: "Invalide user query"});
+    return res.json({errors: "Invalid user query"});
   }
   query.exec(function(err, user) {
     if (err) return next(err);
@@ -68,7 +68,7 @@ exports.show = function(req, res) {
     if (user) {
       res.json(user.cleanForApi());
     } else {
-      res.json({errors: ["Could not find user '" + username + "'"]});
+      res.json(404, {errors: ["Could not find user '" + uq + "'"]});
     }
   });
 };

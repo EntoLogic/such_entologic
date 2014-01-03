@@ -341,13 +341,14 @@ such.controller("RegisterCtrl", function($scope, $location, User, Notifications)
   $scope.newUser = new User();
 
   $scope.registerUser = function() {
+    console.log($scope.registerform);
     if ($scope.registerform.$invalid) {
       Notifications.add({
         bsType: "danger",
         msg: "Form Invalid",
         timeout: 9
       });
-      return;
+      return; // Cancel the request
     }
     $scope.newUser.$save(function() {
       $location.path("/");
@@ -362,3 +363,20 @@ such.controller("RegisterCtrl", function($scope, $location, User, Notifications)
     });
   };
 });
+
+such.controller("ShowUserCtrl", function($scope, $routeParams, User, Explanation) {
+  var providedId = $routeParams.username;
+  $scope.user = {};
+  $scope.explanations = [];
+  $scope.isCurrentUser = false;
+  User.byUsername({userId: providedId}, function(user){
+    $scope.user = user;
+    $scope.explanations = Explanation.query({forUser: user._id});
+    $scope.isCurrentUser = $scope.u && user._id === $scope.u._id;
+  }, function() {
+    $scope.userError = "Could not find username " + providedId;
+  });
+});
+
+
+

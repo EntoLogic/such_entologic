@@ -49,6 +49,10 @@ ExplanationSchema.path('saved').validate(function (s) {
   return !(!this.user && (this.saved || this.lastTranslated === null)); // If there is no user but it is saved or they want it to not trasnlate, BAD!
 }, 'Cannot save without being signed in!');
 
+ExplanationSchema.path('plainCodeInput').validate(function (c) {
+  return c ? (c.length < 2000) : true;
+}, 'Input code too large!');
+
 ExplanationSchema.methods.forApi = function() {
   // Selects fields to send back incase private ones are added
   return _.pick(this, [

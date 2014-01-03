@@ -63,7 +63,7 @@ exports.update = function(req, res) {
   var sessId = req.sessionID;
   var userId = req.user && req.user._id;
   Explanation.findOne({_id: req.params.eId, $or: [{sessionId: sessId}, {user: userId}]}, function(err, exp) {
-    if (err) return req.json(err); // TODO: only send back required info
+    if (err) return res.json(err); // TODO: only send back required info
     if (exp) {
       if (!exp.lastTranslated) { // Only may be accessed when last translated is not null
         return res.json(404, {errors: ["Explanation may not be accessed during translation."]});
@@ -79,5 +79,26 @@ exports.update = function(req, res) {
     } else {
       res.json(404, {errors: ["Could not find Explanation with that id!"]});
     }
+  });
+};
+
+exports.list = function(req, res) {
+  var providedUserId = req.query.forUser;
+  var currentUserId = req.user && req.user._id;
+
+  var query = Explanation.find();
+  if (providedUserId) {
+    query = query.where('user').equals(providedUserId);
+    if (providedUserId === currentUserId) {
+      query = query.where('saved').in([1,2]); //Show the current user their private and public ones
+    } else {
+      query = query.where('saved').equals(1);
+    }
+  } else {
+    query = query.where('saved').equals(1);
+  }
+  query.select('user nLang pLang title plainCodeInput saved').exec(function(err, list){
+    if (err) return res.json(500, {errors: ["Error finding explanations"]});
+    res.json(200, list);
   });
 };
