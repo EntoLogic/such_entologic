@@ -5,11 +5,12 @@
 	  <span>User since {{user.createdAt | date:mediumDate}}</span>
 	</div>
 
+	<h4 ng-show="!explanations">Loading explanations...</h4>
+
 	<h4 ng-show="explanations && explanations.length">
 		Explanations by {{isCurrentUser ? 'you' : 'this user'}}:
 	</h4>
-
-	<h4 ng-hide="explanations && explanations.length">
+	<h4 ng-show="explanations && !explanations.length">
 		{{isCurrentUser ? 'You do' : 'This user does'}}
 	  not have any explanations saved. :(
 	</h4>

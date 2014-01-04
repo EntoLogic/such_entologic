@@ -67,8 +67,8 @@ such.controller("MainController", function($scope, $window, $location, $route, $
         if(modalInstance) {
           modalInstance.close();
           modalInstance = null;
-          $route.reload();
         }
+        $route.reload();
       });
     }).error(function(resErr) {
       $scope.u = null;
@@ -339,9 +339,9 @@ such.controller('EditorCtrl', function($scope, $timeout) {
   };
 });
 
-such.controller('OutputExplanationCtrl', function($scope) {
+// such.controller('OutputExplanationCtrl', function($scope) {
 
-});
+// });
 
 such.controller("NotFoundCtrl", function($scope, Notifications) {
   Notifications.add({
@@ -393,7 +393,7 @@ such.controller("ShowUserCtrl", function($scope, $routeParams, User, Explanation
   $scope.user = {};
   $scope.isCurrentUser = $scope.u && providedId === $scope.u.username;
 
-  $scope.explanations = [];
+  $scope.explanations = null;
   var getUserExplanations = function(uId) {
     $scope.explanations = Explanation.query({forUser: uId});
   };
