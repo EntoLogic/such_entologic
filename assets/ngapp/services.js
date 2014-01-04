@@ -159,6 +159,12 @@ such.config(function($httpProvider) {
   $httpProvider.interceptors.push('mainInterceptor');
 });
 
+such.factory("Highlight", function() {
+  return {
+    start: null, end: null
+  };
+});
+
 such.filter('attrEq', function() {
   return function(inputArray, attrName, attrValue) {
     var filteredArray = [];

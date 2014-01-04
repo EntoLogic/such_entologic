@@ -17,7 +17,7 @@ body
 }
 #entologic-current-page
 {
-	padding: 60px 0 110px 0;
+	padding: 60px 0 130px 0;
 	min-height: 100%;
 	position: relative;
 }
@@ -159,6 +159,10 @@ body
 .CodeMirror {
   border: 1px solid #dddddd;
   height: auto;
+  .highlighted
+  {
+  	background-color: #00e345;
+  }
 }
 .CodeMirror-scroll {
   overflow-y: hidden;
@@ -191,4 +195,8 @@ input.ng-invalid.ng-dirty
 .user-explanation
 {
 	padding: 0;
+	.user-exp-info
+	{
+		margin-bottom: 0;
+	}
 }

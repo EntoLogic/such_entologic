@@ -6,30 +6,31 @@
 	</div>
 
 	<h4 ng-show="explanations && explanations.length">
-		Explanations by {{isCurrentUser ? 'You' : 'this user'}}:
+		Explanations by {{isCurrentUser ? 'you' : 'this user'}}:
 	</h4>
 
 	<h4 ng-hide="explanations && explanations.length">
-		{{isCurrentUser ? 'You' : 'This user'}}
-		does not have any explanations saved. :(
+		{{isCurrentUser ? 'You do' : 'This user does'}}
+	  not have any explanations saved. :(
 	</h4>
 
-	<a href="/#/exp/{{e._id}}" ng-repeat="e in explanations" class="col-sm-6">
+	<a href="/#/exp/{{e._id}}" ng-repeat="e in explanations">
 		<div class="user-explanation panel panel-{{e.saved == 2 ? 'info' : 'primary'}}">
 			<div class="panel-heading">
-				<ul class="list-inline text-center">
+				<ul class="list-inline text-center user-exp-info">
+				  <li><b ng-bind="e.saved == 2 ? 'Private' : 'Public'"></b></li>
 				  <li ng-show="e.title">Title: <b ng-bind="e.title"></b></li>
 				  <li>Programming Language: <b ng-bind="modes[e.pLang].fullName"></b></li>
 				  <li>Spoken Language: <b ng-bind="spokens[e.nLang].en"></b></li>
-				  <li ng-show="e.saved == 2"><b>Private</b></li>
 				</ul>
 			</div>
 		  <div class="panel-body">
-		    <pre ng-bind="e.plainCodeInput" class="pre-scrollable"></pre>
+		    <pre ng-bind="e.plainCodeInput | truncate:80" class="pre-scrollable"></pre>
 		  </div>
 		  <div class="panel-footer text-right">
 		  	Last updated: {{e.updatedAt | date:'medium'}}
 		  </div>
 		</div>
 	</a>
+	<div class="clearfix"></div>
 </div>

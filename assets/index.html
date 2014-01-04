@@ -20,6 +20,7 @@
 	<script type="text/javascript" src="/comp/custom.min.js"></script>
 
 	<script src="http://localhost:35729/livereload.js"></script>
+
 </head>
 <body ng-controller="MainController">
   <!-- NAVBAR -->
@@ -72,10 +73,14 @@
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-              <li><a href="#">Snippets</a></li>
-              <li><a href="#">Contributions</a></li>
+              <li><a href="/#/u/{{u.username}}">Saved</a></li>
+              <li><a href="#">
+                Contributions <span class="label label-info">Soon</span>
+              </a></li>
               <li class="divider"></li>
-              <li><a href="#">Account Settings</a></li>
+              <li><a href="#">
+                Account Settings <span class="label label-info">Soon</span>
+              </a></li>
               <li><a ng-click="signout()" href="#">Logout</a></li>
             </ul>
           </div>
@@ -185,7 +190,7 @@
       </div>
       <div class="panel-body loading-panel" ng-show="percentageDone">
         <progress percent="percentageDone" class="progress-striped active explanation-progress"></progress>
-        <div ng-show="percentageDone == 100 && !exp.lastTranslated" class="alert alert-danger">
+        <div ng-show="percentageDone === 100 && !exp.lastTranslated" class="alert alert-danger">
           <h4>Explanation error!</h4>
           <p>
             For some reason your explanation request did not get processed by the translator :(<br>
@@ -275,8 +280,9 @@
             </ul>
           </div>
         </div>
-        <div class="well well-sm" ng-show="exp.outputTree">
-          <pre>{{exp.outputTree | json}}</pre>
+        <div class="well well-sm" ng-show="outputTreeObject">
+          <o-phrase p-obj="outputTreeObject"></o-phrase>
+          <pre>{{outputTreeObject | json}}</pre>
         </div>
       </div>
     </div>

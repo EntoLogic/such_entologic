@@ -14,7 +14,7 @@ such.controller("MainController", function($scope, $window, $location, $route, $
   var modalInstance;
 
   $scope.navCollapsed = true;
-  
+
   // Programming language
   $scope.modes = languageMetaData.programming;
   // Spoken Language
@@ -122,7 +122,7 @@ such.controller("LoginCtrl", function($scope, $modalInstance, Session, triedActi
 //    Page Controllers
 // ======================
 
-such.controller("ExplainCtrl", function($scope, $interval, $location, $routeParams, Explanation, User, Notifications) {
+such.controller("ExplainCtrl", function($scope, $interval, $timeout, $location, $routeParams, Explanation, User, Notifications, Highlight) {
   // $scope.exp = {};
   // $scope.creationUser = {};
   var explanationChecker;
@@ -142,12 +142,17 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
   var providedId = $routeParams.eId;
   var persistedExp = {};
 
+  $scope.highlightLocation = Highlight;
+
   var getAndSetExp = function(expId, noErrors) {
     // var noErrors = Boolean(failureMsg);
     Explanation.get({eId: expId, empty: noErrors}, function(savedExp) {
       angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
       $scope.exp = savedExp;
       $scope.percentageDone = 0;
+      if ($scope.exp && (typeof $scope.exp.outputTree === 'string')) {
+        $scope.outputTreeObject = JSON.parse($scope.exp.outputTree);
+      }
     }, function(errorResponse) {
       if (!noErrors) { // Check if there is a failure message string because that means it's coming from the poller.
         $scope.setupNewExp(); // (also stops removing the exp to allow retry.)
@@ -181,9 +186,6 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
   $scope.$watch("exp", function() {
     $scope.showOutputPane = $scope.exp && (($scope.exp.translatorMessages && $scope.exp.translatorMessages.length) || $scope.exp.outputTree);
     if ($scope.exp && $scope.exp.saved) $scope.exp.saved = $scope.exp.saved.toString();
-    if ($scope.exp && (typeof $scope.exp.outputTree === 'string')) {
-      $scope.exp.outputTree = JSON.parse($scope.exp.outputTree);
-    }
   }, true);
 
   $scope.setSpoken = function(s) {
@@ -232,7 +234,7 @@ such.controller("ExplainCtrl", function($scope, $interval, $location, $routePara
     $scope.exp.saving = true; // Show loading on save button. Will be removed by mongoose anyway.
     $scope.exp.saved = $scope.exp.saved || 1; // Set to public unless already specified
     $scope.exp.$save(function(savedExp) {
-      if ((providedId !== savedExp._id) && savedExp.saved) {
+      if ((providedId !== savedExp._id)) {
         goExplanationLocaction($scope.exp._id);
       } else {
         angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
@@ -306,8 +308,27 @@ such.controller('EditorCtrl', function($scope, $timeout) {
       $scope.themeChanged = function() {
         _cm.setOption("theme", $scope.currentTheme);
       };
+      var highlightInstance;
+      $scope.$watch("highlightLocation", function(newHighlight) {
+        if (highlightInstance) {
+          highlightInstance.clear();
+        }
+        // var highlightObject
+        if (newHighlight.start && newHighlight.end) {
+          highlightInstance = _cm.doc.markText(
+            {line: newHighlight.start[0], ch: newHighlight.start[1]},
+            {line: newHighlight.end[0], ch: newHighlight.end[1]}
+          );
+        } else if (newHighlight.start) {
+          highlightInstance = _cm.doc.markText(
+            {line: newHighlight.start[0], ch: newHighlight.start[1]},
+            {line: newHighlight.start[0], ch: newHighlight.start[1] + 1},
+            {className: "highlighted"}
+          );
+        }
+      }, true);
       // var codeUpdateTimeout;
-      // // Not (ng-model not working for some reason): Obsolete: Update scope on code change
+      // // Not (ng-model not working for some reason on 1.2.3+): Obsolete: Update scope on code change
       // _cm.on("change", function() {
       //   $timeout.cancel(codeUpdateTimeout);
       //   codeUpdateTimeout = $timeout(function() {
@@ -316,7 +337,10 @@ such.controller('EditorCtrl', function($scope, $timeout) {
       // });
     }
   };
- 
+});
+
+such.controller('OutputExplanationCtrl', function($scope) {
+
 });
 
 such.controller("NotFoundCtrl", function($scope, Notifications) {
@@ -367,15 +391,24 @@ such.controller("RegisterCtrl", function($scope, $location, User, Notifications)
 such.controller("ShowUserCtrl", function($scope, $routeParams, User, Explanation) {
   var providedId = $routeParams.username;
   $scope.user = {};
+  $scope.isCurrentUser = $scope.u && providedId === $scope.u.username;
+
   $scope.explanations = [];
-  $scope.isCurrentUser = false;
-  User.byUsername({userId: providedId}, function(user){
-    $scope.user = user;
-    $scope.explanations = Explanation.query({forUser: user._id});
-    $scope.isCurrentUser = $scope.u && user._id === $scope.u._id;
-  }, function() {
-    $scope.userError = "Could not find username " + providedId;
-  });
+  var getUserExplanations = function(uId) {
+    $scope.explanations = Explanation.query({forUser: uId});
+  };
+
+  if ($scope.isCurrentUser) {
+    $scope.user = $scope.u;
+    getUserExplanations($scope.user._id);
+  } else {
+    User.byUsername({userId: providedId}, function(user){
+      $scope.user = user;
+      getUserExplanations(user._id);
+    }, function() {
+      $scope.userError = "Could not find username " + providedId;
+    });    
+  }
 });
 
 

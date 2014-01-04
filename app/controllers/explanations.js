@@ -97,7 +97,8 @@ exports.list = function(req, res) {
   } else {
     query = query.where('saved').equals(1);
   }
-  query.select('user nLang pLang title plainCodeInput saved updatedAt').exec(function(err, list){
+  query.select('user nLang pLang title plainCodeInput saved updatedAt')
+      .sort({updatedAt: -1}).exec(function(err, list){
     if (err) return res.json(500, {errors: ["Error finding explanations"]});
     res.json(200, list);
   });
