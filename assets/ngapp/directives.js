@@ -50,7 +50,6 @@ such.directive("oPhrase", function($timeout, Highlight) {
     template: "<o-clause ng-repeat='c in pObj.clauses track by $index' clause='c' ng-mouseenter='setHighlight(pObj.location)'></o-clause> ",
     link: function(scope, element, attrs) {
       scope.setHighlight = function(highlightObject) {
-        console.log(highlightObject);
         Highlight.start = highlightObject.start;
         Highlight.end = highlightObject.end;
       };

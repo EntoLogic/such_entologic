@@ -280,7 +280,7 @@
             </ul>
           </div>
         </div>
-        <div class="well well-sm" ng-show="outputTreeObject">
+        <div class="well well-sm" ng-if="outputTreeObject" >
           <o-phrase p-obj="outputTreeObject"></o-phrase>
           <pre>{{outputTreeObject | json}}</pre>
         </div>

@@ -150,9 +150,6 @@ such.controller("ExplainCtrl", function($scope, $interval, $timeout, $location, 
       angular.copy(savedExp, persistedExp); // store for later comparison i.e 'Closing this will remove saved changes'
       $scope.exp = savedExp;
       $scope.percentageDone = 0;
-      if ($scope.exp && (typeof $scope.exp.outputTree === 'string')) {
-        $scope.outputTreeObject = JSON.parse($scope.exp.outputTree);
-      }
     }, function(errorResponse) {
       if (!noErrors) { // Check if there is a failure message string because that means it's coming from the poller.
         $scope.setupNewExp(); // (also stops removing the exp to allow retry.)
@@ -187,6 +184,16 @@ such.controller("ExplainCtrl", function($scope, $interval, $timeout, $location, 
     $scope.showOutputPane = $scope.exp && (($scope.exp.translatorMessages && $scope.exp.translatorMessages.length) || $scope.exp.outputTree);
     if ($scope.exp && $scope.exp.saved) $scope.exp.saved = $scope.exp.saved.toString();
   }, true);
+
+  $scope.$watch("exp.outputTree", function() {
+    // Crappy timing fix for weird output
+    if ($scope.exp && (typeof $scope.exp.outputTree === 'string')) {
+      $scope.outputTreeObject = null;
+      $timeout(function(){
+        $scope.outputTreeObject = JSON.parse($scope.exp.outputTree);
+      }, 100);
+    }
+  });
 
   $scope.setSpoken = function(s) {
     if (!$scope.spokens[s]) {
@@ -365,7 +372,6 @@ such.controller("RegisterCtrl", function($scope, $location, User, Notifications)
   $scope.newUser = new User();
 
   $scope.registerUser = function() {
-    console.log($scope.registerform);
     if ($scope.registerform.$invalid) {
       Notifications.add({
         bsType: "danger",
