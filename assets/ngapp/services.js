@@ -11,6 +11,12 @@ such.factory("Explanation", function($resource) {
   });
 });
 
+such.factory("Phrase", function($resource) {
+  return $resource('/p/:pId', { 
+    pId: "@_id"
+  });
+});
+
 such.factory("Session", function($http) {
   return {
     signin: function(l, p) {

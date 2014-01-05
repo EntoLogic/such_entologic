@@ -429,6 +429,8 @@ such.controller("ShowUserCtrl", function($scope, $routeParams, User, Explanation
 //  Phrase Controllers
 // ====================
 
-such.controller("PhraseList", function($scope) {
-  
+such.controller("PhraseListCtrl", function($scope, Phrase, User) {
+  Phrase.query(function(phrases) {
+    $scope.phrases = phrases;
+  });
 });

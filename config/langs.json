@@ -6,18 +6,15 @@
 		},
 		"fr": {
 			"code": "fr",
-			"en": "French",
-			"disabled": "true"
+			"en": "French"
 		}, 
 		"de": {
 			"code": "de",
-			"en": "German",
-			"disabled": "true"
+			"en": "German"
 		}, 
 		"it": {
 			"code": "it",
-			"en": "Italian",
-			"disabled": "true"
+			"en": "Italian"
 		}
 	},
 	"programming": {
@@ -26,15 +23,9 @@
 			"fullName": "Ruby",
 			"uastGenRepo": "https://github.com/EntoLogic/ruby_uast_gen"
 		},
-		"python": {
-			"fullName": "Python",
-			"name": "python",
-			"disabled": "true"
-		},
 		"java": {
 			"fullName": "Java",
-			"name": "java",
-			"disabled": "true"
+			"name": "java"
 		}
 	}
 }

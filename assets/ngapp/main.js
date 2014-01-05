@@ -22,6 +22,9 @@ such.config(function($routeProvider, $locationProvider) {
   }).when('/u/:username', {
     templateUrl: 'views/user_profile.html',
     controller: 'ShowUserCtrl'
+  }).when('/translate', {
+    templateUrl: 'views/phrase_list.html',
+    controller: 'PhraseListCtrl'
   }).otherwise({
     controller: 'NotFoundCtrl',
     templateUrl: 'notFound.html'
@@ -59,7 +62,7 @@ var languageMetaData = {
       "en": "German"
     }, 
     "it": {
-      "code": "ie",
+      "code": "it",
       "en": "Italian"
     }
   },
@@ -69,14 +72,10 @@ var languageMetaData = {
       "fullName": "Ruby",
       "uastGenRepo": "https://github.com/EntoLogic/ruby_uast_gen"
     },
-    "python": {
-      "fullName": "Python",
-      "name": "python"
-    },
     "java": {
       "fullName": "Java",
       "name": "java"
-    },
+    }
   }
 };
 

@@ -35,7 +35,8 @@ var UserSchema = new Schema({
   twitter: {},
   github: {},
   google: {},
-  signInCount: Number
+  signInCount: Number,
+  admin: Number
 });
 
 var apiSafeFields = {

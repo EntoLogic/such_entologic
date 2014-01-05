@@ -1,0 +1,22 @@
+<div class="row translations-top">
+	<div class="col-md-10">
+		<h1>Submitted Phrases</h1>
+		<p class="lead">
+			Here you will find a list of phrases submitted by users which you can vote on to be used by the translator.
+		</p>
+	</div>
+	<div class="col-md-2">
+		<a href="/#/translate/new" class="btn btn-default">Create a translation</a>
+	</div>
+</div>
+<div class="panel panel-default" ng-repeat="p in phrases" ng-class="{'panel-default': !p.inUse, 'panel-success': p.inUse}">
+  <div class="panel-heading">
+  	<ul class="list-inline">
+  		<li>Spoken Language: <b ng-bind="spokens[p.nLang].en"></b></li>
+  		<li>Programming Language: <b ng-bind="modes[p.pLang].fullName"></b></li>
+  	</ul>
+  </div>
+  <div class="panel-body">
+    {{p.clauses |json }}
+  </div>
+</div>

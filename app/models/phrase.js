@@ -3,8 +3,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     timestamps = require('./mongoose_plugins/super_timestamp'),
     _ = require("underscore"),
-    phraseTypeList = require(config.root + "/public/phrase_type_list"),
-    langsList = require("../../config/langs");
+    phraseTypeList = require(config.root + "/public/phrase_type_list");
 
 var getPhraseType = function(pName) {
   return _.find(phraseTypeList, function(p) {

@@ -47,5 +47,5 @@ module.exports = function(app, passport, auth) {
   app.get('/e', explanations.list);
 
   app.post('/p', auth.requiresLogin, phrases.create);
-
+  app.get('/p', phrases.list);
 };
