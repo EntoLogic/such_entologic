@@ -24,7 +24,7 @@ exports.create = function(req, res) {
     newExp.lastTranslated = null; // If they want explanation, set lastTranslated to null so the translator picks it up
   }
   newExp.save(function(err, exp) {
-    if (err) return res.json(400, valErrors(err));
+    if (err) return res.json(400, {errors: valErrors(err)});
     res.json(exp.forApi());
   });
 };
@@ -41,7 +41,7 @@ exports.show = function(req, res) {
       {saved: 2, user: userId}
     ]
   }, function(err, exp) {
-    if (err) return res.json(valErrors(err)); // TODO: only send back required info
+    if (err) return res.json({errors: "Error finding explanation"});
     if (exp) {
       if (exp.lastTranslated) { // Only may be accessed when last translated is not null
         res.json(exp.forApi());
@@ -73,7 +73,7 @@ exports.update = function(req, res) {
         exp.lastTranslated = null;
       }
       exp.save(function(err, updatedExp) {
-        if (err) return res.json(400, valErrors(err));
+        if (err) return res.json(400, {errors: valErrors(err)});
         res.json(updatedExp.forApi());
       });
     } else {
