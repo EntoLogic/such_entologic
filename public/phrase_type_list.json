@@ -1,0 +1,316 @@
+[
+  {
+    "phrase_type": "FuncDecl",
+    "descriptive": "Function Declaration",
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "name",
+        "attr_type": "string",
+        "full_name": "Function name"
+      },
+      {
+        "attr": "returnType",
+        "attr_type": "string",
+        "full_name": "Function return type"
+      }
+    ]
+  },
+  {
+    "phrase_type": "BinaryExpr",
+    "descriptive": "Binary Operator Expression",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "operation",
+        "attr_type": "string",
+        "full_name": "Textual representation of operation being performed"
+      },
+      {
+        "attr": "leftExpr",
+        "attr_type": "nested",
+        "full_name": "Expression on the left of the operator"
+      },
+      {
+        "attr": "rightExpr",
+        "attr_type": "nested",
+        "full_name": "Expression on the right of the operator"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "PrefixExpr",
+    "descriptive": "Prefix Operator Expression",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "operation",
+        "attr_type": "string",
+        "full_name": "Textual representation of operation being performed"
+      },
+      {
+        "attr": "expression",
+        "attr_type": "nested",
+        "full_name": "Expression being operated on"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "PostfixExpr",
+    "descriptive": "Postfix Operator Expression",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "operation",
+        "attr_type": "string",
+        "full_name": "Textual representation of operation being performed"
+      },
+      {
+        "attr": "expression",
+        "attr_type": "nested",
+        "full_name": "Expression being operated on"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "VarAccess",
+    "descriptive": "Variable Access",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "varName",
+        "attr_type": "string",
+        "full_name": "The name of the variable being accessed"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "FieldAccess",
+    "descriptive": "Field Access",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "object",
+        "attr_type": "nested",
+        "full_name": "The object whose field is being accessed"
+      },
+      {
+        "attr": "fieldName",
+        "attr_type": "string",
+        "full_name": "The name of the field being accessed"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "InstanceConstruction",
+    "descriptive": "Construction of type instance",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "type",
+        "attr_type": "nested",
+        "full_name": "The type of which an instance is being constructed"
+      },
+      {
+        "attr": "arguments",
+        "attr_type": "list",
+        "full_name": "The arguments to the type constructor"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "MethodCall",
+    "descriptive": "Method call on object",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "object",
+        "attr_type": "nested",
+        "full_name": "The object on which the method is being called"
+      },
+      {
+        "attr": "methodName",
+        "attr_type": "string",
+        "full_name": "The name of the method being called"
+      },
+      {
+        "attr": "genericParameters",
+        "attr_type": "list",
+        "full_name": "Generic parameters to the method"
+      },
+      {
+        "attr": "arguments",
+        "attr_type": "list",
+        "full_name": "The arguments to the method"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "FunctionCall",
+    "descriptive": "Function Call",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "functionName",
+        "attr_type": "string",
+        "full_name": "The name of the function being called"
+      },
+      {
+        "attr": "genericParameters",
+        "attr_type": "list",
+        "full_name": "Generic parameters to the function"
+      },
+      {
+        "attr": "arguments",
+        "attr_type": "list",
+        "full_name": "The arguments to the function"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "Assignment",
+    "descriptive": "Assignment",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "variable",
+        "attr_type": "nested",
+        "full_name": "Variable being assigned to"
+      },
+      {
+        "attr": "expression",
+        "attr_type": "nested",
+        "full_name": "Expression on the right side of the assignment"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "OpAssignment",
+    "descriptive": "Assignment with operator",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "operation",
+        "attr_type": "string",
+        "full_name": "Textual representation of operation being performed"
+      },
+      {
+        "attr": "variable",
+        "attr_type": "nested",
+        "full_name": "Variable being assigned to"
+      },
+      {
+        "attr": "expression",
+        "attr_type": "nested",
+        "full_name": "Expression on the right side of the operator-assignment"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
+    "phrase_type": "VarDecl",
+    "descriptive": "single variable declaration",
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "modifiers",
+        "attr_type": "list",
+        "full_name": "Variable modifiers"
+      },
+      {
+        "attr": "type",
+        "attr_type": "nested",
+        "full_name": "Type of variable being declared"
+      },
+      {
+        "attr": "initializer",
+        "attr_type": "nested",
+        "full_name": "Initializer expression the variable is being assigned to"
+      },
+      {
+        "attr": "name",
+        "attr_type": "nested",
+        "full_name": "Name of variable being declared"
+      }
+    ]
+  }
+]

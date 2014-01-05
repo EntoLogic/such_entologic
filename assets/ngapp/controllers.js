@@ -119,7 +119,7 @@ such.controller("LoginCtrl", function($scope, $modalInstance, Session, triedActi
 
 
 // ======================
-//    Page Controllers
+//   Explain Controllers
 // ======================
 
 such.controller("ExplainCtrl", function($scope, $interval, $timeout, $location, $routeParams, Explanation, User, Notifications, Highlight) {
@@ -350,12 +350,20 @@ such.controller('EditorCtrl', function($scope, $timeout) {
 
 // });
 
+// ====================
+//  Random Controllers
+// ====================
+
 such.controller("NotFoundCtrl", function($scope, Notifications) {
   Notifications.add({
     bsType: "danger",
     msg: "Page not found!"
   });
 });
+
+// ==================
+//  User Controllers
+// ==================
 
 such.controller("RegisterCtrl", function($scope, $location, User, Notifications) {
   if ($scope.u) {
@@ -417,5 +425,10 @@ such.controller("ShowUserCtrl", function($scope, $routeParams, User, Explanation
   }
 });
 
+// ====================
+//  Phrase Controllers
+// ====================
 
-
+such.controller("PhraseList", function($scope) {
+  
+});

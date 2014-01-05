@@ -2,6 +2,7 @@ module.exports = function(app, passport, auth) {
   //User Routes
   var users = require('../app/controllers/users');
   var explanations = require('../app/controllers/explanations');
+  var phrases = require('../app/controllers/phrases');
 
   // //Setting up the users api
   app.post('/u', users.create);
@@ -27,47 +28,6 @@ module.exports = function(app, passport, auth) {
   app.get('/u/me', auth.requiresLogin200, users.me);
   app.get('/u/:userquery', users.show); // userquery is either a username or user object id
 
-  // //Setting the facebook oauth routes
-  // app.get('/auth/facebook', passport.authenticate('facebook', {
-  //     scope: ['email', 'user_about_me'],
-  //     failureRedirect: '/signin'
-  // }), users.signin);
-
-  // app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  //     failureRedirect: '/signin'
-  // }), users.authCallback);
-
-  // //Setting the github oauth routes
-  // app.get('/auth/github', passport.authenticate('github', {
-  //     failureRedirect: '/signin'
-  // }), users.signin);
-
-  // app.get('/auth/github/callback', passport.authenticate('github', {
-  //     failureRedirect: '/signin'
-  // }), users.authCallback);
-
-  // //Setting the twitter oauth routes
-  // app.get('/auth/twitter', passport.authenticate('twitter', {
-  //     failureRedirect: '/signin'
-  // }), users.signin);
-
-  // app.get('/auth/twitter/callback', passport.authenticate('twitter', {
-  //     failureRedirect: '/signin'
-  // }), users.authCallback);
-
-  // //Setting the google oauth routes
-  // app.get('/auth/google', passport.authenticate('google', {
-  //     failureRedirect: '/signin',
-  //     scope: [
-  //         'https://www.googleapis.com/auth/userinfo.profile',
-  //         'https://www.googleapis.com/auth/userinfo.email'
-  //     ]
-  // }), users.signin);
-
-  // app.get('/auth/google/callback', passport.authenticate('google', {
-  //     failureRedirect: '/signin'
-  // }), users.authCallback);
-
   // //Article Routes
   // var articles = require('../app/controllers/articles');
   // app.get('/articles', articles.all);
@@ -75,9 +35,6 @@ module.exports = function(app, passport, auth) {
   // app.get('/articles/:articleId', articles.show);
   // app.put('/articles/:articleId', auth.requiresLogin, auth.article.hasAuthorization, articles.update);
   // app.del('/articles/:articleId', auth.requiresLogin, auth.article.hasAuthorization, articles.destroy);
-
-  // //Finish with setting up the articleId param
-  // app.param('articleId', articles.article);
 
   //Home route
   var home = require('../app/controllers/home');
@@ -88,5 +45,7 @@ module.exports = function(app, passport, auth) {
   app.post('/e/:eId', explanations.update);
   app.get('/e/:eId', explanations.show);
   app.get('/e', explanations.list);
+
+  app.post('/p', auth.requiresLogin, phrases.create);
 
 };

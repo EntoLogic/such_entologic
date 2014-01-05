@@ -1,0 +1,40 @@
+{
+	"spoken": {
+		"en": {
+			"code": "en",
+			"en": "English"
+		},
+		"fr": {
+			"code": "fr",
+			"en": "French",
+			"disabled": "true"
+		}, 
+		"de": {
+			"code": "de",
+			"en": "German",
+			"disabled": "true"
+		}, 
+		"it": {
+			"code": "it",
+			"en": "Italian",
+			"disabled": "true"
+		}
+	},
+	"programming": {
+		"ruby": {
+			"name": "ruby",
+			"fullName": "Ruby",
+			"uastGenRepo": "https://github.com/EntoLogic/ruby_uast_gen"
+		},
+		"python": {
+			"fullName": "Python",
+			"name": "python",
+			"disabled": "true"
+		},
+		"java": {
+			"fullName": "Java",
+			"name": "java",
+			"disabled": "true"
+		}
+	}
+}
