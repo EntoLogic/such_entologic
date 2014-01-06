@@ -11,7 +11,6 @@ var valErrors = function(valErrorsObj) {
 };
 
 exports.create = function(req, res) {
-	console.log("CREATE PHRASE!");
 	var newPhrase = new Phrase(Phrase.allowed(req.body));
 	newPhrase.user = req.user._id;
 
@@ -30,8 +29,31 @@ exports.create = function(req, res) {
   });
 };
 
-exports.update = function(req, res) {
+exports.show = function(req, res) {
+  Phrase.findOne({_id: req.params.pId}, function(err, phrase) {
+    if (err) return res.json({errors: "Error finding phrase"});
+    if (phrase) {
+      res.json(phrase);
+    } else {
+      res.json(404, {errors: ["Could not find Phrase with that id!"]});
+    }
+  });
+};
 
+exports.update = function(req, res) {
+  var userId = req.user && req.user._id;
+  Phrase.findOne({_id: req.params.pId, user: userId}, function(err, phrase) {
+    if (err) return res.json(err);
+    if (phrase) {
+      _.extend(phrase, Phrase.allowed(req.body)); // Slap on any (allowed) changes :P
+      phrase.save(function(err, updatedPhrase) {
+        if (err) return res.json(400, {errors: valErrors(phrase)});
+        res.json(updatedPhrase);
+      });
+    } else {
+      res.json(404, {errors: ["Could not find Phrase with that id!"]});
+    }
+  });
 };
 
 exports.list = function(req, res) {

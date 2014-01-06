@@ -480,8 +480,21 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, $location
     $scope.phrase.$save(function() {
       $location.path("/translate");
       Notifications.add({
-        bsType: "danger",
+        bsType: "success",
         msg: "Phrase submitted and will be in review by an admin.",
+        timeout: 12
+      });
+    }, function() {
+      // Notifications should be sufficient
+    });
+  };
+
+  $scope.saveChanges = function() {
+    $scope.phrase.$save(function() {
+      $location.path("/translate");
+      Notifications.add({
+        bsType: "success",
+        msg: "Changes saved to phrase",
         timeout: 12
       });
     }, function() {

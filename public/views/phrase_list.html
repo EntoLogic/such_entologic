@@ -20,9 +20,10 @@
   		<li>Spoken Language: <b ng-bind="p.nLang"></b></li>
   		<li>Programming Language: <b ng-bind="modes[p.pLang].fullName"></b></li>
   		<li>Programming Language: <b ng-bind="p.phraseName"></b></li>
+      <a class="btn btn-default pull-right" href="/#/translate/{{p._id}}" ng-show="p.user === u._id">Edit</a>
   	</ul>
   </div>
   <div class="panel-body">
-    <span ng-repeat="c in p.clauses" ng-class="{'text-warning': c.condition}" ng-bind="c.words + ($last ? '' : '|')"></span>
+    <span ng-repeat="c in p.clauses" ng-class="{'text-warning': c.condition, 'text-info': !c.condition}" ng-bind="c.words + ($last ? '' : '|')"></span>
   </div>
 </div>

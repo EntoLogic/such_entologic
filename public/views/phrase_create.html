@@ -45,17 +45,17 @@
 	        <li><a href="">Why can't I translate into...(faq)</a></li>
 	      </ul>
 	    </div>
-			<button type="button" class="btn btn-primary pull-right" ng-click="addClause()">
-				Add First Clause
-			</button>
 	  </div>
 
 	  <div class="panel-body options-panel" ng-show="phrase.clauses.length">
 	  	Explaining <b ng-bind="currentPhraseObject.descriptive"></b>
 	  	in <b ng-bind="modes[phrase.pLang].fullName"></b>
 	  	in <b ng-bind="spokens[phrase.nLang].en"></b>
-			<button type="button" class="btn btn-primary pull-right" ng-click="addClause()">
-				Add Clause
+			<button type="button" class="btn btn-success pull-right" ng-hide="phrase._id" ng-click="submitPhrase()">
+				Submit Phrase
+			</button>
+			<button type="button" class="btn btn-success pull-right" ng-show="phrase._id" ng-click="saveChanges()">
+				Save Changes
 			</button>
 	  </div>
 	</div>
@@ -65,7 +65,9 @@
 			<h3>Clauses</h3>
 		</div>
 		<div class="col-md-6">
-			<button type="button" class="btn btn-success pull-right" ng-click="submitPhrase()">Submit Phrase</button>
+			<button type="button" class="btn btn-primary pull-right" ng-click="addClause()">
+				Add Clause
+			</button>
 		</div>
 	</div>
 	<h5 ng-hide="phrase.clauses.length">Add a clause by clicking the button above.</h5>

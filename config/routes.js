@@ -48,4 +48,6 @@ module.exports = function(app, passport, auth) {
 
   app.post('/p', auth.requiresLogin, phrases.create);
   app.get('/p', phrases.list);
+  app.get('/p/:pId', phrases.show);
+  app.post('/p/:pId', auth.requiresLogin, phrases.update);
 };
