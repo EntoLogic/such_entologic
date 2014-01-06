@@ -176,7 +176,7 @@ such.controller("ExplainCtrl", function($scope, $interval, $timeout, $location, 
     }
   } else {
     // Initial code content...
-    var sampleSource = 'class Person\n  attr_reader :name, :age\n  def initialize(name, age)\n    @name, @age = name, age\n  end\n  def to_s\n    "#{name} (#{age})"\n  end\nend\n \ngroup = [\n  Person.new("Bob", 33),\n  Person.new("Chris", 16),\n  Person.new("Ash", 23)\n]\n \nputs group.sort.reverse';
+    var sampleSource = 'def hello\n  x = 2 + 2\nend';
     $scope.setupNewExp(sampleSource);
   }
 

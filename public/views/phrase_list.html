@@ -9,14 +9,20 @@
 		<a href="/#/translate/new" class="btn btn-default">Create a translation</a>
 	</div>
 </div>
-<div class="panel panel-default" ng-repeat="p in phrases" ng-class="{'panel-default': !p.inUse, 'panel-success': p.inUse}">
+<div class="panel panel-default explanation-panel">
+  <div class="panel-body options-panel">
+  	<input type="text" class="form-control" placeholder="Filter phrases..." ng-model="searchPhrases">
+  </div>
+</div>
+<div class="panel panel-default" ng-repeat="p in phrases | filter:searchPhrases" ng-class="{'panel-default': !p.inUse, 'panel-success': p.inUse}">
   <div class="panel-heading">
   	<ul class="list-inline">
-  		<li>Spoken Language: <b ng-bind="spokens[p.nLang].en"></b></li>
+  		<li>Spoken Language: <b ng-bind="p.nLang"></b></li>
   		<li>Programming Language: <b ng-bind="modes[p.pLang].fullName"></b></li>
+  		<li>Programming Language: <b ng-bind="p.phraseName"></b></li>
   	</ul>
   </div>
   <div class="panel-body">
-    {{p.clauses |json }}
+    {{p |json }}
   </div>
 </div>
