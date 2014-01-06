@@ -23,6 +23,6 @@
   	</ul>
   </div>
   <div class="panel-body">
-    {{p |json }}
+    <span ng-repeat="c in p.clauses" ng-class="{'text-warning': c.condition}" ng-bind="c.words + ($last ? '' : '|')"></span>
   </div>
 </div>
