@@ -532,5 +532,11 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, Phrase, U
   $scope.addWords = function(i, w) {
     $scope.phrase.clauses[i].words.push(w || "");
   };
+
+  $scope.conditionTypeNullCheck = function(clauseIndex) {
+    if ($scope.phrase.clauses[clauseIndex].condition.conditionType === null) {
+      $scope.phrase.clauses[clauseIndex].condition = null;
+    }
+  };
 });
 

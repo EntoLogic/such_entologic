@@ -99,7 +99,26 @@
         </button>
 			</div>
 			<br>
-			Condition
+			<br>
+			<div>
+				Condition Type:
+        <select ng-model="c.condition.conditionType" ng-options="cT for cT in ['presence', 'comparison']"
+        		ng-change="conditionTypeNullCheck(clauseIndex)">
+          <option value="">Default Clause</option>
+        </select>
+      </div>
+      <div ng-show="c.condition.conditionType">
+				<span popover-placement="top" popover-trigger="mouseenter" popover="Do the opposite.">
+			    Reverse:
+			  </span>
+        <select ng-model="c.condition.reverse" ng-options="r for r in [false, true]"></select>
+      </div>
+      <div ng-show="c.condition.conditionType">
+				<span popover-placement="top" popover-trigger="mouseenter" popover="The attribute the clauses existence will depend on.">
+			    Phrase Attribute:
+			  </span>
+        <select ng-model="c.condition.nodeAttribute" ng-options="nA.attr as nA.attr for nA in currentPhraseObject.attributes"></select>
+      </div>
 		</div>
 		<div class="col-md-8">
 			<div class="well well-sm">
