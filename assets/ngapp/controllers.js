@@ -499,17 +499,38 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, Phrase, U
   };
 
   $scope.addClause = function() {
-    $scope.phrase.clauses.push({words: ["Add words and variables here..."]});
+    if (!($scope.phrase.clauses.length || $scope.phrase.phraseName)) {
+      Notifications.add({
+        bsType: "warning",
+        msg: "Please select all options!",
+        timeout: 7
+      });
+      return;
+    }
+    $scope.phrase.clauses.push({words: [""]});
   };
 
   $scope.deleteClause = function(i) {
     $scope.phrase.clauses.splice(i, 1);
   };
 
-  $scope.addWords = function(i) {
-    // console.log(i);
-    // console.log($scope.phrase);
-    $scope.phrase.clauses[i].words.push("");
+  $scope.moveClause = function(i, d) {
+    // i => index, d => down (defaults to up)
+    var clausesLength = $scope.phrase.clauses.length;
+    var moving;
+    if (d && i < (clausesLength - 1)) {
+      moving = $scope.phrase.clauses[i];
+      $scope.phrase.clauses[i] = $scope.phrase.clauses[i + 1];
+      $scope.phrase.clauses[i + 1] = moving;
+    } else if (!d && i > 0) {
+      moving = $scope.phrase.clauses[i];
+      $scope.phrase.clauses[i] = $scope.phrase.clauses[i - 1];
+      $scope.phrase.clauses[i - 1] = moving;
+    }
+  };
+
+  $scope.addWords = function(i, w) {
+    $scope.phrase.clauses[i].words.push(w || "");
   };
 });
 

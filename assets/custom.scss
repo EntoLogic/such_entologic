@@ -9,6 +9,12 @@ body
 	height: 100%;
 	vertical-align: baseline;
 }
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
 #entologic-container
 {
 	min-height: 100%;
@@ -201,7 +207,6 @@ input.ng-invalid.ng-dirty
 	}
 }
 
-
 .translations-top
 {
 	h1
@@ -210,6 +215,23 @@ input.ng-invalid.ng-dirty
 	}
 }
 
-.list-inline.word-list > li:first-child {
-  padding-left: 5px;
+.phrase-editor
+{
+	h2, h3
+	{
+		margin-top: 2px;
+	}
+	.word-list {
+	  padding-left: 5px;
+	}
+	.dropdown-menu
+	{
+		max-height: 200px;
+		overflow-y: scroll;
+	}
+	.single-clause
+	{
+		margin-bottom: 10px;
+		border-left: 1px solid #929292;
+	}
 }

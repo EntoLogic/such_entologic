@@ -1,9 +1,9 @@
 <h4 ng-hide="phraseTypes">Loading phrase editor...</h4>
-<div ng-show="phraseTypes">
-	<h3>Add new phrase</h3>
+<div ng-show="phraseTypes" class="phrase-editor">
+	<h2>Add new phrase</h2>
 
-	<div class="panel panel-default explanation-panel" ng-show="!exp.user || (exp.user === u._id)">
-	  <div class="panel-body options-panel" ng-hide="percentageDone">
+	<div class="panel panel-default explanation-panel">
+	  <div class="panel-body options-panel" ng-hide="phrase.clauses.length">
 	    Explain 
 	    <div class="btn-group btn-group-sm">
 	      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -12,9 +12,22 @@
 	        <span class="sr-only">Toggle Dropdown</span>
 	      </button>
 	      <ul class="dropdown-menu" role="menu">
-	        <li ng-repeat="pT in phraseTypes | orderBy:'descriptive'">
+	        <li ng-repeat="pT in phraseTypes">
 	          <a href="" ng-bind="pT.descriptive" ng-click="setPhraseType(pT.phrase_type)"></a>
 	        </li>
+	      </ul>
+	    </div>
+	    in
+	    <div class="btn-group btn-group-sm">
+	      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	        <span ng-bind="modes[phrase.pLang].fullName"></span> <span class="caret"></span>
+	      </button>
+	      <ul class="dropdown-menu" role="menu">
+	        <li ng-repeat="(m, info) in modes | orderBy:'toString()'">
+	          <a href="" ng-bind="info.fullName" ng-click="setMode(m)"></a>
+	        </li>
+	        <li role="presentation" class="divider"></li>
+	        <li><a href="">Where is support for x programming language...(faq)</a></li>
 	      </ul>
 	    </div>
 	    in
@@ -32,59 +45,92 @@
 	        <li><a href="">Why can't I translate into...(faq)</a></li>
 	      </ul>
 	    </div>
-	    in
-	    <div class="btn-group btn-group-sm">
-	      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-	        <span ng-bind="modes[phrase.pLang].fullName"></span> <span class="caret"></span>
-	      </button>
-	      <ul class="dropdown-menu" role="menu">
-	        <li ng-repeat="(m, info) in modes | orderBy:'toString()'">
-	          <a href="" ng-bind="info.fullName" ng-click="setMode(m)"></a>
-	        </li>
-	        <li role="presentation" class="divider"></li>
-	        <li><a href="">Where is support for x programming language...(faq)</a></li>
-	      </ul>
-	    </div>
+			<button type="button" class="btn btn-primary pull-right" ng-click="addClause()">
+				Add First Clause
+			</button>
+	  </div>
+
+	  <div class="panel-body options-panel" ng-show="phrase.clauses.length">
+	  	Explaining <b ng-bind="currentPhraseObject.descriptive"></b>
+	  	in <b ng-bind="modes[phrase.pLang].fullName"></b>
+	  	in <b ng-bind="spokens[phrase.nLang].en"></b>
+			<button type="button" class="btn btn-primary pull-right" ng-click="addClause()">
+				Add Clause
+			</button>
 	  </div>
 	</div>
 
 	<div class="row">
-		<div class="col-md-3">
-			<button type="button" class="btn btn-primary" ng-click="addClause()">
-				Add Clause
-			</button>
+		<div class="col-md-4">
+			<h3>Clauses</h3>
 		</div>
-		<div class="col-md-9">
-			<h4>Clauses</h4>
+		<div class="col-md-8">
 		</div>
 	</div>
 
-	<div class="row" ng-repeat="c in phrase.clauses track by $index">
-		<div class="col-md-3">
-			<button type="button" class="btn btn-default" ng-click="addWords($index)">
-				Add words
-			</button>
-			<button type="button" class="btn btn-danger" aria-hidden="true" ng-click="deleteClause($index)">
+	<div class="row single-clause" ng-repeat="c in phrase.clauses track by $index" ng-init="clauseIndex = $index">
+		<div class="col-md-4">
+			<div class="btn-group">
+				<button type="button" class="btn btn-info btn-sm" ng-click="addWords($index)">
+					Add words
+				</button>
+			  <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
+			    Add variable <span class="caret"></span>
+			    <span class="sr-only">Toggle Dropdown</span>
+			  </button>
+			  <ul class="dropdown-menu" role="menu">
+			    <li ng-repeat="attrType in currentPhraseObject.attributes" popover-placement="right" popover-append-to-body="true"
+			    		popover-trigger="mouseenter" popover="{{attrType.attr_type}} - {{attrType.full_name}}">
+			    	<a href="" ng-click="addWords(clauseIndex, '$$' + attrType.attr)" ng-bind="attrType.attr"></a>
+			    </li>
+			  </ul>
+			</div>
+			<button type="button" class="btn btn-danger btn-sm" aria-hidden="true" ng-click="deleteClause($index)">
 				&times; Remove
 			</button>
+			<div class="btn-group">
+        <button class="btn btn-default btn-sm" type="button"
+        				ng-click="moveClause($index, 0)">
+        	&uarr;
+        </button>
+        <button class="btn btn-default btn-sm" type="button"
+        				ng-click="moveClause($index, 1)">
+        	&darr;
+        </button>
+			</div>
+			<br>
 			Condition
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<div class="well well-sm">
-				<ul class="list-inline word-list">
+				<ul class="word-list list-unstyled">
 					<li ng-repeat="w in c.words track by $index">
 						<div class="input-group">
 				      <span class="input-group-btn">
-				        <button class="btn btn-danger" type="button" ng-click="c.words.splice($index, 1)">
+				        <button class="btn btn-danger btn-sm" type="button" ng-click="c.words.splice($index, 1)">
 				        	&times;
 				        </button>
 				      </span>
-				      <input type="text" class="form-control" ng-model="c.words[$index]" ng-change="">
+				      <input type="text" class="form-control input-sm"
+				      				ng-model="c.words[$index]" ng-change=""
+				      				placeholder="Add words and variables here...">
+				      <!-- <span class="input-group-btn">
+				        <button class="btn btn-default btn-sm" type="button">
+				        	&uarr;
+				        </button>
+				        <button class="btn btn-default btn-sm" type="button">
+				        	&darr;
+				        </button>
+				      </span> -->
 				    </div>
 					</li>
 				</ul>
+				<small>
+					Multiple words can be added with spaces seperating in one box. Variables however must be given their own word box.
+				</small>
 			</div>
 		</div>
+		<hr>
 	</div>
 
 	<pre ng-bind="phrase | json"></pre>

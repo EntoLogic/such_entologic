@@ -288,7 +288,7 @@
   },
   {
     "phrase_type": "VarDecl",
-    "descriptive": "single variable declaration",
+    "descriptive": "Single variable declaration",
     "editable": true,
     "attributes": [
       {
@@ -312,5 +312,89 @@
         "full_name": "Name of variable being declared"
       }
     ]
+  },
+  {
+    "phrase_type": "add",
+    "descriptive": "Addition operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "subtract",
+    "descriptive": "Subtraction operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "add",
+    "descriptive": "Addition operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "multiply",
+    "descriptive": "Multiplication operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "divide",
+    "descriptive": "Division operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "modulo",
+    "descriptive": "Modulo operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "logicalOr",
+    "descriptive": "Logical OR operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "logicalAnd",
+    "descriptive": "Logical AND operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "bitOr",
+    "descriptive": "Bitwise OR operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "bitAnd",
+    "descriptive": "Bitwise AND operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "xor",
+    "descriptive": "Exclusive OR operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "rShift",
+    "descriptive": "Bitshift right operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "lShift",
+    "descriptive": "Bitshift left operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "rUShift",
+    "descriptive": "Unsigned bitshift right operator",
+    "editable": true,
+    "attributes": []
   }
 ]
