@@ -60,7 +60,7 @@ such.directive("oPhrase", function($timeout, Highlight) {
 
 such.directive("oClause", function($compile) {
   var phraseListTemplate = "<br><ul><li ng-repeat='p in clause track by $index'><o-phrase p-obj='p'></o-phrase></li></ul><br>";
-  var singlePhraseTemplate = "<o-phrase p-obj='clause'></o-phrase>";
+  var singlePhraseTemplate = "<o-phrase p-obj='clause'></o-phrase> ";
   return {
     restrict: 'E',
     // replace: true,
@@ -68,7 +68,7 @@ such.directive("oClause", function($compile) {
     link: function(scope, element, attrs) {
       // console.log("clause:", scope.clause);
       if (angular.isString(scope.clause)) {
-        element.html(scope.clause); // If string: set the output to the text itself
+        element.html(scope.clause + " "); // If string: set the output to the text itself
       } else if (angular.isArray(scope.clause)) {
         element.replaceWith($compile(phraseListTemplate)(scope)); // If array: Use the phraseListTemplate
       } else if (angular.isObject(scope.clause)) {
