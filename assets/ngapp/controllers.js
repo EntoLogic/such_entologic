@@ -456,6 +456,11 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, $location
   $scope.submitPhrase = function() {
     $scope.phrase.$save(function() {
       $location.path("/translate");
+      Notifications.add({
+        bsType: "danger",
+        msg: "Phrase submitted and will be in review by an admin.",
+        timeout: 12
+      });
     }, function() {
       // Notifications should be sufficient
     });

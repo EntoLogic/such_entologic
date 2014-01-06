@@ -14,8 +14,6 @@ such.config(function($routeProvider, $locationProvider) {
     redirectTo: "/"
   }).when('/about', {
     templateUrl: 'views/about.html'
-  }).when('/contribute', {
-    templateUrl: 'views/contribute.html'
   }).when('/register', {
     templateUrl: 'views/create_account.html',
     controller: 'RegisterCtrl'
@@ -26,6 +24,9 @@ such.config(function($routeProvider, $locationProvider) {
     templateUrl: 'views/phrase_list.html',
     controller: 'PhraseListCtrl'
   }).when('/translate/new', {
+    templateUrl: 'views/phrase_create.html',
+    controller: 'NewPhraseCtrl'
+  }).when('/translate/:tId', {
     templateUrl: 'views/phrase_create.html',
     controller: 'NewPhraseCtrl'
   }).otherwise({
