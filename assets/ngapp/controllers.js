@@ -448,12 +448,34 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, $location
     });
   });
 
+  var setupNewPhrase = function() {
+    $scope.phrase = new Phrase();
+    $scope.phrase.nLang = $routeParams.nl || "en";
+    $scope.phrase.pLang = $routeParams.pl || "ruby";
+    if (!$scope.phrase.clauses) $scope.phrase.clauses = [];
+  };
+
+  $scope.setPhraseType = function(p) {
+    var phraseTypeFound = getPhraseType(p);
+    if (phraseTypeFound) {
+      $scope.phrase.phraseName = p;
+      $scope.currentPhraseObject = phraseTypeFound;
+    } else {
+      Notifications.add({
+        bsType: "warning",
+        msg: "Phrase type not available",
+        timeout: 7
+      });
+    }
+  };
+
   var suppliedPhraseId = $routeParams.pId;
 
   if (typeof suppliedPhraseId === 'string') {
     if (suppliedPhraseId.length === 24) {
       Phrase.get({pId: suppliedPhraseId}, function(res) {
         $scope.phrase = res;
+        $scope.setPhraseType(res.phraseName);
       }, function(resErr) {
         setupNewPhrase();
         // Notifications will handle it
@@ -469,12 +491,6 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, $location
     setupNewPhrase();
   }
 
-  var setupNewPhrase = function() {
-    $scope.phrase = new Phrase();
-    $scope.phrase.nLang = $routeParams.nl || "en";
-    $scope.phrase.pLang = $routeParams.pl || "ruby";
-    if (!$scope.phrase.clauses) $scope.phrase.clauses = [];
-  };
 
   $scope.submitPhrase = function() {
     $scope.phrase.$save(function() {
@@ -534,20 +550,6 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, $location
       }
     }
     return phraseFound || false;
-  };
-
-  $scope.setPhraseType = function(p) {
-    var phraseTypeFound = getPhraseType(p);
-    if (phraseTypeFound) {
-      $scope.phrase.phraseName = p;
-      $scope.currentPhraseObject = phraseTypeFound;
-    } else {
-      Notifications.add({
-        bsType: "warning",
-        msg: "Phrase type not available",
-        timeout: 7
-      });
-    }
   };
 
   $scope.addClause = function() {

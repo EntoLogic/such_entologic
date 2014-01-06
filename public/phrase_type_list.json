@@ -5,14 +5,51 @@
     "editable": true,
     "attributes": [
       {
+        "attr": "modifiers",
+        "attr_type": "list",
+        "full_name": "Modifiers to function"
+      },
+      {
         "attr": "name",
         "attr_type": "string",
         "full_name": "Function name"
       },
       {
         "attr": "returnType",
-        "attr_type": "string",
+        "attr_type": "nested",
         "full_name": "Function return type"
+      },
+      {
+        "attr": "arguments",
+        "attr_type": "list",
+        "full_name": "Function arguments"
+      },
+      {
+        "attr": "body",
+        "attr_type": "list",
+        "full_name": "Function body"
+      }
+    ]
+  },
+  {
+    "phrase_type": "ParamDecl",
+    "descriptive": "Argument in function declaration",
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "name",
+        "attr_type": "string",
+        "full_name": "Name of function argument"
+      },
+      {
+        "attr": "type",
+        "attr_type": "nested",
+        "full_name": "Type of function argument"
+      },
+      {
+        "attr": "default",
+        "attr_type": "nested",
+        "full_name": "Default value of function argument"
       }
     ]
   },
