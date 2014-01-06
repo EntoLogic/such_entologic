@@ -434,3 +434,67 @@ such.controller("PhraseListCtrl", function($scope, Phrase, User) {
     $scope.phrases = phrases;
   });
 });
+
+such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, Phrase, User, Notifications) {
+  $http({method: 'GET', url: "/phrase_type_list.json"}).success(function(res) {
+    $scope.phraseTypes = res;
+  }).error(function() {
+    Notifications.add({
+      bsType: "danger",
+      msg: "Error loading phrase types, try reloading..."
+    });
+  });
+
+  $scope.phrase = new Phrase();
+  $scope.phrase.nLang = $routeParams.nl || "en";
+  $scope.phrase.pLang = $routeParams.pl || "ruby";
+
+  $scope.setSpoken = function(s) {
+    if ($scope.spokens[s]) {
+      $scope.phrase.nLang = s;
+    } else {
+      Notifications.add({
+        bsType: "warning",
+        msg: "Spoken language not available",
+        timeout: 7
+      });
+    }
+  };
+
+  $scope.setMode = function(m) {
+    if ($scope.modes[m]) {
+      $scope.phrase.pLang = m;
+    } else {
+      Notifications.add({
+        bsType: "warning",
+        msg: "Programming language not available",
+        timeout: 7
+      });
+    }
+  };
+
+  var getPhraseType = function(p) {
+    var phraseFound;
+    for (var i = $scope.phraseTypes.length - 1; i >= 0; i--) {
+      if ($scope.phraseTypes[i].phrase_type === p) {
+        phraseFound = $scope.phraseTypes[i];
+      }
+    }
+    return phraseFound || false;
+  };
+
+  $scope.setPhraseType = function(p) {
+    var phraseTypeFound = getPhraseType(p);
+    if (phraseTypeFound) {
+      $scope.phrase.phraseName = p;
+      $scope.currentPhraseObject = phraseTypeFound;
+    } else {
+      Notifications.add({
+        bsType: "warning",
+        msg: "Phrase type not available",
+        timeout: 7
+      });
+    }
+  };
+});
+

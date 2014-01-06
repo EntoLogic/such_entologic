@@ -1,0 +1,52 @@
+<h4 ng-hide="phraseTypes">Loading phrase editor...</h4>
+<div ng-show="phraseTypes">
+	<h3>Add new phrase</h3>
+
+	<div class="panel panel-default explanation-panel" ng-show="!exp.user || (exp.user === u._id)">
+	  <div class="panel-body options-panel" ng-hide="percentageDone">
+	    Explain 
+	    <div class="btn-group btn-group-sm">
+	      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	        <span ng-bind="currentPhraseObject.descriptive || 'select phrase type'"></span>
+	        <span class="caret"></span>
+	        <span class="sr-only">Toggle Dropdown</span>
+	      </button>
+	      <ul class="dropdown-menu" role="menu">
+	        <li ng-repeat="pT in phraseTypes | orderBy:'descriptive'">
+	          <a href="" ng-bind="pT.descriptive" ng-click="setPhraseType(pT.phrase_type)"></a>
+	        </li>
+	      </ul>
+	    </div>
+	    in
+	    <div class="btn-group btn-group-sm">
+	      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	        <span ng-bind="spokens[phrase.nLang].en"></span>
+	        <span class="caret"></span>
+	        <span class="sr-only">Toggle Dropdown</span>
+	      </button>
+	      <ul class="dropdown-menu" role="menu">
+	        <li ng-repeat="(s, info) in spokens | orderObjectBy:'en'">
+	          <a href="" ng-bind="info.en" ng-click="setSpoken(info.code)"></a>
+	        </li>
+	        <li role="presentation" class="divider"></li>
+	        <li><a href="">Why can't I translate into...(faq)</a></li>
+	      </ul>
+	    </div>
+	    in
+	    <div class="btn-group btn-group-sm">
+	      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	        <span ng-bind="modes[phrase.pLang].fullName"></span> <span class="caret"></span>
+	      </button>
+	      <ul class="dropdown-menu" role="menu">
+	        <li ng-repeat="(m, info) in modes | orderBy:'toString()'">
+	          <a href="" ng-bind="info.fullName" ng-click="setMode(m)"></a>
+	        </li>
+	        <li role="presentation" class="divider"></li>
+	        <li><a href="">Where is support for x programming language...(faq)</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	</div>
+
+	<pre ng-bind="phrase | json"></pre>
+</div>
