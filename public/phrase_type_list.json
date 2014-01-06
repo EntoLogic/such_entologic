@@ -30,12 +30,12 @@
         "full_name": "Textual representation of operation being performed"
       },
       {
-        "attr": "leftExpr",
+        "attr": "left",
         "attr_type": "nested",
         "full_name": "Expression on the left of the operator"
       },
       {
-        "attr": "rightExpr",
+        "attr": "right",
         "attr_type": "nested",
         "full_name": "Expression on the right of the operator"
       },
@@ -394,6 +394,72 @@
   {
     "phrase_type": "rUShift",
     "descriptive": "Unsigned bitshift right operator",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "public",
+    "descriptive": "Public modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "private",
+    "descriptive": "Private modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "protected",
+    "descriptive": "Protected modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "static",
+    "descriptive": "Static modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "const",
+    "descriptive": "Const modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "final",
+    "descriptive": "Final modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "abstract",
+    "descriptive": "Abstract modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "transient",
+    "descriptive": "Transient modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "volatile",
+    "descriptive": "Volatile modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "synchronized",
+    "descriptive": "Synchronized modifier",
+    "editable": true,
+    "attributes": []
+  },
+  {
+    "phrase_type": "strictfp",
+    "descriptive": "StrictFP modifier",
     "editable": true,
     "attributes": []
   }

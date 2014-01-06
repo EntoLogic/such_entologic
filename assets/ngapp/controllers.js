@@ -438,7 +438,7 @@ such.controller("PhraseListCtrl", function($scope, Phrase, User) {
   });
 });
 
-such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, Phrase, User, Notifications) {
+such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, $location, Phrase, User, Notifications) {
   $http({method: 'GET', url: "/phrase_type_list.json"}).success(function(res) {
     $scope.phraseTypes = res;
   }).error(function() {

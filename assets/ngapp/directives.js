@@ -47,11 +47,12 @@ such.directive("oPhrase", function($timeout, Highlight) {
     restrict: 'E',
     // replace: true,
     scope: {pObj: '='},
-    template: "<o-clause ng-repeat='c in pObj.clauses track by $index' clause='c' ng-mouseenter='setHighlight(pObj.location)'></o-clause> ",
+    template: "<o-clause ng-repeat='c in pObj.clauses track by $index' clause='c' ng-mouseenter='setHighlight(pObj.loc)'></o-clause> ",
     link: function(scope, element, attrs) {
       scope.setHighlight = function(highlightObject) {
-        Highlight.start = highlightObject.start;
-        Highlight.end = highlightObject.end;
+        if (!highlightObject) return;
+        Highlight.start = highlightObject.start || Highlight.start;
+        Highlight.end = highlightObject.end || Highlight.end;
       };
     }
   };
