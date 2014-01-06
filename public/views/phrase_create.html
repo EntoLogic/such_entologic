@@ -48,5 +48,44 @@
 	  </div>
 	</div>
 
+	<div class="row">
+		<div class="col-md-3">
+			<button type="button" class="btn btn-primary" ng-click="addClause()">
+				Add Clause
+			</button>
+		</div>
+		<div class="col-md-9">
+			<h4>Clauses</h4>
+		</div>
+	</div>
+
+	<div class="row" ng-repeat="c in phrase.clauses track by $index">
+		<div class="col-md-3">
+			<button type="button" class="btn btn-default" ng-click="addWords($index)">
+				Add words
+			</button>
+			<button type="button" class="btn btn-danger" aria-hidden="true" ng-click="deleteClause($index)">
+				&times; Remove
+			</button>
+			Condition
+		</div>
+		<div class="col-md-9">
+			<div class="well well-sm">
+				<ul class="list-inline word-list">
+					<li ng-repeat="w in c.words track by $index">
+						<div class="input-group">
+				      <span class="input-group-btn">
+				        <button class="btn btn-danger" type="button" ng-click="c.words.splice($index, 1)">
+				        	&times;
+				        </button>
+				      </span>
+				      <input type="text" class="form-control" ng-model="c.words[$index]" ng-change="">
+				    </div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
 	<pre ng-bind="phrase | json"></pre>
 </div>

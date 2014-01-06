@@ -209,3 +209,7 @@ input.ng-invalid.ng-dirty
 		margin-top: 5px;
 	}
 }
+
+.list-inline.word-list > li:first-child {
+  padding-left: 5px;
+}

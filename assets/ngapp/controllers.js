@@ -448,6 +448,7 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, Phrase, U
   $scope.phrase = new Phrase();
   $scope.phrase.nLang = $routeParams.nl || "en";
   $scope.phrase.pLang = $routeParams.pl || "ruby";
+  if (!$scope.phrase.clauses) $scope.phrase.clauses = [];
 
   $scope.setSpoken = function(s) {
     if ($scope.spokens[s]) {
@@ -495,6 +496,20 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, Phrase, U
         timeout: 7
       });
     }
+  };
+
+  $scope.addClause = function() {
+    $scope.phrase.clauses.push({words: ["Add words and variables here..."]});
+  };
+
+  $scope.deleteClause = function(i) {
+    $scope.phrase.clauses.splice(i, 1);
+  };
+
+  $scope.addWords = function(i) {
+    // console.log(i);
+    // console.log($scope.phrase);
+    $scope.phrase.clauses[i].words.push("");
   };
 });
 
