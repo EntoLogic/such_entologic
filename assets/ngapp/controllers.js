@@ -444,14 +444,37 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, $location
   }).error(function() {
     Notifications.add({
       bsType: "danger",
-      msg: "Error loading phrase types, try reloading..."
+      msg: "Error getting phrase types, try reloading the page..."
     });
   });
 
-  $scope.phrase = new Phrase();
-  $scope.phrase.nLang = $routeParams.nl || "en";
-  $scope.phrase.pLang = $routeParams.pl || "ruby";
-  if (!$scope.phrase.clauses) $scope.phrase.clauses = [];
+  var suppliedPhraseId = $routeParams.pId;
+
+  if (typeof suppliedPhraseId === 'string') {
+    if (suppliedPhraseId.length === 24) {
+      Phrase.get({pId: suppliedPhraseId}, function(res) {
+        $scope.phrase = res;
+      }, function(resErr) {
+        setupNewPhrase();
+        // Notifications will handle it
+      });      
+    } else {
+      Notifications.add({
+        bsType: "danger",
+        msg: "Invalid phrase id '" + suppliedPhraseId + "'",
+        timeout: 12
+      });
+    }
+  } else {
+    setupNewPhrase();
+  }
+
+  var setupNewPhrase = function() {
+    $scope.phrase = new Phrase();
+    $scope.phrase.nLang = $routeParams.nl || "en";
+    $scope.phrase.pLang = $routeParams.pl || "ruby";
+    if (!$scope.phrase.clauses) $scope.phrase.clauses = [];
+  };
 
   $scope.submitPhrase = function() {
     $scope.phrase.$save(function() {

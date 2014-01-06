@@ -26,7 +26,7 @@ such.config(function($routeProvider, $locationProvider) {
   }).when('/translate/new', {
     templateUrl: 'views/phrase_create.html',
     controller: 'NewPhraseCtrl'
-  }).when('/translate/:tId', {
+  }).when('/translate/:pId', {
     templateUrl: 'views/phrase_create.html',
     controller: 'NewPhraseCtrl'
   }).otherwise({
