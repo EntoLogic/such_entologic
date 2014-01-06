@@ -55,6 +55,9 @@ such.controller("MainController", function($scope, $window, $location, $route, $
   $scope.getUserDetails = function(cb) {
     var userResource = User.me(function(user) {
       $scope.u = user;
+      if (user.admin === 1) {
+        $scope.modes.default = { name: "default", fullName: "Default" };
+      }
       if (cb) cb();
     }, function(err) {
       $scope.u = null;
@@ -449,6 +452,14 @@ such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, Phrase, U
   $scope.phrase.nLang = $routeParams.nl || "en";
   $scope.phrase.pLang = $routeParams.pl || "ruby";
   if (!$scope.phrase.clauses) $scope.phrase.clauses = [];
+
+  $scope.submitPhrase = function() {
+    $scope.phrase.$save(function() {
+      $location.path("/translate");
+    }, function() {
+      // Notifications should be sufficient
+    });
+  };
 
   $scope.setSpoken = function(s) {
     if ($scope.spokens[s]) {

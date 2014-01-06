@@ -35,7 +35,7 @@ exports.update = function(req, res) {
 };
 
 exports.list = function(req, res) {
-	Phrase.find({}, function(err, listOfPhrases) {
+	Phrase.find().sort({updatedAt: -1}).exec(function(err, listOfPhrases) {
 		if (err) return res.json(500, {errors: ["Error loading phrases"]});
 		res.json(listOfPhrases);
 	});

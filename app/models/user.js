@@ -40,7 +40,7 @@ var UserSchema = new Schema({
 });
 
 var apiSafeFields = {
-  me: ["_id", "email", "username", "realName", "provider", "createdAt"],
+  me: ["_id", "email", "username", "realName", "provider", "createdAt", "admin"],
   randomUser: ["_id", "username", "realName", "createdAt"]
 };
 var bannedUsernames = ['me'];
