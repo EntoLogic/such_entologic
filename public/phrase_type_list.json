@@ -217,7 +217,7 @@
         "full_name": "The object on which the method is being called"
       },
       {
-        "attr": "methodName",
+        "attr": "name",
         "attr_type": "string",
         "full_name": "The name of the method being called"
       },
@@ -247,7 +247,7 @@
     "editable": true,
     "attributes": [
       {
-        "attr": "functionName",
+        "attr": "name",
         "attr_type": "string",
         "full_name": "The name of the function being called"
       },
