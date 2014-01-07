@@ -13,3 +13,65 @@
 <h4>The EntoLogic project was created to help programming newcomers understand how programs work by explaining snippets they provide in whichever language they speak.</h4>
 
 <p>The initial motivation was to have it as an entry in the <a href="http://www.btyoungscientist.com/">BT Young Scientist &amp; Technology Exhibition</a> (a national science fair) but has grown since.</p>
+
+<h3 id="how">How does it work?</h3>
+<p>
+	<ul>
+		<li>The input programming language is first sent to an appropriate UAST (universal <a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a>) generator.</li>
+		<li>The generator first parses your code into the native AST of the language and then converts your code </li>
+		<li>into our universal format which the main translator can understand.</li>
+		<li>The translator then traverses the nodes in the tree and gets the relevant phrase for the particular spoken language it is trying to explain it in.</li>
+		<li>Any conditional clauses are dealt with and variables are filled in.</li>
+		<li>The output tree is sent back to the frontend and displayed on the screen.</li>
+	</ul>
+</p>
+
+<h3>FAQ</h3>
+
+<dl>
+  <dt>Translating x will not make any grammatical sense using your method!</dt>
+  <dd>
+  	Firstly you need to understand that the aim of EntoLogic is not to write poetic narratives of your code.
+  	We created it to get a message across to the reader.
+  	If we get people to understand programs better, we have accomplished our aim.
+		This isn't at all to say that we aren't trying to make the system better at describing code like if it was written by a human.
+  </dd>
+
+  <dt>What technologies did you use?</dt>
+  <dd>
+  	EntoLogic is written using multiple programming languages and data stores.
+  	<ul>
+	  	<li>The main translator programmes are written in Haskell.</li>
+	  	<li>The whole web app is written in the famous/infamous JavaScript.</li>
+	  	<li>Backend is Node.js and the frontend (as some of you may have already noticed) is Angular.js.</li>
+	  	<li>And we are using MongoDB as a database.</li>
+  	</ul>
+  </dd>
+
+  <dt>Why isn't programming language x supported?</dt>
+  <dd>
+  	Obviously, we want to support as many programming languages as possible so EntoLogic can reach as many learners as possible.
+  	Currently our team is very small and we aren't experts in every single programming language.
+  	We have designed our system in a way that allows users to build the software necessary to parse (nearly) any programming language.
+  	If you are interested in helping out to build a UAST generator for a language you have proficiency in, please visit the 
+  	<a href="https://github.com/EntoLogic/contribution-info">contribution</a> for more information.
+  </dd>
+
+  <dt>Open Source?</dt>
+  <dd>
+  	We have been considering open sourcing much more or even our whole system.
+  	At the moment, the uast definitions and generators are open source.
+  	As we were entering the project in a competition, we wanted to keep things closed until shown to the judges
+  </dd>
+
+  <dt>Is there an API? I want to build a CLI/text editor plugin.</dt>
+  <dd>We are currently working on an API and command line interface. You can use the web app until then.</dd>
+
+  <dt>Why doesn't it highlight the whole thing I'm hovering over?</dt>
+  <dd>
+  	The locations we can highlight depend on what kind of info we get from the language parsers.
+  	The parser we are using for Ruby (Ripper) only gives the starting character location of literals.
+  	If you think you could do a better job or want to add support for another programming language, go to the
+  	<a href="https://github.com/EntoLogic/contribution-info">contribution page</a>.
+  </dd>
+</dl>
