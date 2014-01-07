@@ -324,6 +324,26 @@
     ]
   },
   {
+    "phrase_type": "StringLit",
+    "descriptive": "String literal",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "value",
+        "attr_type": "string",
+        "full_name": "String in literal"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
     "phrase_type": "VarDecl",
     "descriptive": "Single variable declaration",
     "editable": true,
