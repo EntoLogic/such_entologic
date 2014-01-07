@@ -12,7 +12,8 @@
 	        <span class="sr-only">Toggle Dropdown</span>
 	      </button>
 	      <ul class="dropdown-menu" role="menu">
-	        <li ng-repeat="pT in phraseTypes">
+	      	<input type="text" ng-model="phraseTypeSearch" placeholder="press tab and search" role="presentation" class="dropdown-header">
+	        <li ng-repeat="pT in phraseTypes | filter:phraseTypeSearch">
 	          <a href="" ng-bind="pT.descriptive" ng-click="setPhraseType(pT.phrase_type)"></a>
 	        </li>
 	      </ul>
