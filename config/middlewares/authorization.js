@@ -16,6 +16,13 @@ exports.requiresLogin200 = function(req, res, next) {
   next();
 };
 
+exports.adminOnly = function(req, res, next) {
+  if (!(req.user.admin === 1)) {
+    return res.json(401, {auth: 1, errors: ["Forbidden Action!"]});
+  }
+  next();
+};
+
 // /**
 //  * User authorizations routing middleware
 //  */

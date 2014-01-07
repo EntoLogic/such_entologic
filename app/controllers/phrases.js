@@ -62,3 +62,20 @@ exports.list = function(req, res) {
 		res.json(listOfPhrases);
 	});
 };
+
+exports.setInUse = function(req, res) {
+  Phrase.findOneAndUpdate({_id: req.params.pId}, { inUse: true }, function(err, pToSet) {
+    if (err) return res.json(err);
+    var q = Phrase.update({
+      pLang: pToSet.pLang,
+      nLang: pToSet.nLang,
+      phraseName: pToSet.phraseName,
+      _id: {$ne: pToSet._id}
+    }, {inUse: false}, function(err, listToUnuse) {
+      if (err) return res.json(err);
+      console.log(listToUnuse);
+      res.json({yays: ["Now set to in use"]});
+    });
+  });
+};
+

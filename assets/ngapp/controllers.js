@@ -436,6 +436,14 @@ such.controller("PhraseListCtrl", function($scope, Phrase, User) {
   Phrase.query(function(phrases) {
     $scope.phrases = phrases;
   });
+  $scope.setInUse = function(phrase) {
+    console.log(phrase);
+    Phrase.setInUse({_id: phrase._id}, function(p) {
+      // Notifications should be enough here
+    }, function() {
+      // Same here
+    });
+  };
 });
 
 such.controller("NewPhraseCtrl", function($scope, $routeParams, $http, $location, Phrase, User, Notifications) {

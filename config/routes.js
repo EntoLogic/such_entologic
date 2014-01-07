@@ -50,4 +50,5 @@ module.exports = function(app, passport, auth) {
   app.get('/p', phrases.list);
   app.get('/p/:pId', phrases.show);
   app.post('/p/:pId', auth.requiresLogin, phrases.update);
+  app.post('/p/:pId/setinuse', auth.requiresLogin, auth.adminOnly, phrases.setInUse);
 };

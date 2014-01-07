@@ -20,7 +20,10 @@
   		<li>Spoken Language: <b ng-bind="p.nLang"></b></li>
   		<li>Programming Language: <b ng-bind="modes[p.pLang].fullName"></b></li>
   		<li>Programming Language: <b ng-bind="p.phraseName"></b></li>
-      <a class="btn btn-default pull-right" href="/#/translate/{{p._id}}" ng-show="p.user === u._id">Edit</a>
+      <div class="btn-group pull-right">
+        <a class="btn btn-default" href="/#/translate/{{p._id}}" ng-show="p.user === u._id || u.admin === 1">Edit</a>
+        <button class="btn btn-default" ng-click="setInUse(p)" ng-show="u.admin === 1">Set in use</button>
+      </div>
   	</ul>
   </div>
   <div class="panel-body">

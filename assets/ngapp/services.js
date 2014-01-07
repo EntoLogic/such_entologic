@@ -12,8 +12,10 @@ such.factory("Explanation", function($resource) {
 });
 
 such.factory("Phrase", function($resource) {
-  return $resource('/p/:pId', { 
+  return $resource('/p/:pId/:otherAction', { 
     pId: "@_id"
+  }, {
+    setInUse: {method: 'POST', params: {otherAction: "setinuse"}}
   });
 });
 
