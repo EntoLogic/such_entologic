@@ -1,7 +1,9 @@
 var such = angular.module('such', ['ui.bootstrap',
                                     'ngResource',
                                     'ngRoute',
-                                    'ui.codemirror']);
+                                    'ui.codemirror',
+                                    'angulartics',
+                                    'angulartics.google.analytics']);
 
 such.config(function($routeProvider, $locationProvider) {
   $routeProvider.when('/', {

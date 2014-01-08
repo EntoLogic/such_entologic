@@ -60,6 +60,8 @@ module.exports = function(grunt) {
             'assets/lib/ui-bootstrap-tpls-0.7.0.js',
             'assets/lib/extra.js',
             'assets/lib/ui-codemirror.js',
+            'assets/lib/angulartics.min.js',
+            'assets/lib/angulartics-google-analytics.min.js',
             'assets/ngapp/main.js',
             'assets/ngapp/services.js',
             'assets/ngapp/controllers.js',
