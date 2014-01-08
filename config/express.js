@@ -7,7 +7,7 @@ var express = require('express'),
     RedisStore = require('connect-redis')(express);
 
 module.exports = function(app, passport, db) {
-  app.use(express.logger("short"));
+  app.use(express.logger());
   app.set('showStackError', true);
 
   app.configure(function() {
