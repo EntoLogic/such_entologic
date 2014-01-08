@@ -344,6 +344,26 @@
     ]
   },
   {
+    "phrase_type": "ArrayLit",
+    "descriptive": "Array literal",
+    "deriving": [
+      "Expression"
+    ],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "contents",
+        "attr_type": "list",
+        "full_name": "Contents of array"
+      },
+      {
+        "attr": "subexpression",
+        "attr_type": "boolean",
+        "full_name": "Whether this expression is contained within a larger expression"
+      }
+    ]
+  },
+  {
     "phrase_type": "VarDecl",
     "descriptive": "Single variable declaration",
     "editable": true,
