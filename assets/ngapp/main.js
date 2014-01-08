@@ -4,7 +4,7 @@ var such = angular.module('such', ['ui.bootstrap',
                                     'ui.codemirror',
                                     'angulartics.google.analytics']);
 
-such.config(function($routeProvider, $locationProvider) {
+such.config(function($routeProvider, $locationProvider, $analyticsProvider) {
   $routeProvider.when('/', {
     templateUrl: 'explain.html',
     controller: 'ExplainCtrl'
