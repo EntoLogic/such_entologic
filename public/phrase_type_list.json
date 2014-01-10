@@ -22,6 +22,43 @@
     ]
   },
   {
+    "phrase_type": "ClassDecl",
+    "descriptive": "Class Declaration",
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "modifiers",
+        "attr_type": "list",
+        "full_name": "Modifiers to class"
+      },
+      {
+        "attr": "name",
+        "attr_type": "string",
+        "full_name": "Class name"
+      },
+      {
+        "attr": "genericParameters",
+        "attr_type": "list",
+        "full_name": "Generic parameters to class"
+      },
+      {
+        "attr": "superClass",
+        "attr_type": "nested",
+        "full_name": "Superclass extended by class"
+      },
+      {
+        "attr": "interfaces",
+        "attr_type": "list",
+        "full_name": "Interfaces implemented by class"
+      },
+      {
+        "attr": "members",
+        "attr_type": "list",
+        "full_name": "Members of class"
+      }
+    ]
+  },
+  {
     "phrase_type": "FuncDecl",
     "descriptive": "Function Declaration",
     "editable": true,
