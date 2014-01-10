@@ -391,6 +391,50 @@
     ]
   },
   {
+    "phrase_type": "ArrayType",
+    "descriptive": "Array type",
+    "deriving": [],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "elementType",
+        "attr_type": "nested",
+        "full_name": "Type of array elements"
+      }
+    ]
+  },
+  {
+    "phrase_type": "ClassType",
+    "descriptive": "Class type",
+    "deriving": [],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "parts",
+        "attr_type": "list",
+        "full_name": "Dot-seperated parts of type, each with possible generic parameters"
+      }
+    ]
+  },
+  {
+    "phrase_type": "ClassTypePart",
+    "descriptive": "Dot-separated part of class type",
+    "deriving": [],
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "name",
+        "attr_type": "nested",
+        "full_name": "Name of class or package"
+      },
+      {
+        "attr": "genericParameters",
+        "attr_type": "nested",
+        "full_name": "Generic parameters to class"
+      }
+    ]
+  },
+  {
     "phrase_type": "add",
     "descriptive": "Addition operator",
     "editable": true,
