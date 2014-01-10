@@ -1,5 +1,27 @@
 [
   {
+    "phrase_type": "CompilationUnit",
+    "descriptive": "Compilation unit",
+    "editable": true,
+    "attributes": [
+      {
+        "attr": "package",
+        "attr_type": "list",
+        "full_name": "Package declaration"
+      },
+      {
+        "attr": "imports",
+        "attr_type": "list",
+        "full_name": "Import statements"
+      },
+      {
+        "attr": "typeDeclarations",
+        "attr_type": "list",
+        "full_name": "Type declarations in compilation unit"
+      }
+    ]
+  },
+  {
     "phrase_type": "FuncDecl",
     "descriptive": "Function Declaration",
     "editable": true,
